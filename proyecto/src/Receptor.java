@@ -8,10 +8,7 @@ import jpcap.packet.TCPPacket;
  import jpcap.packet.EthernetPacket;
 import jpcap.packet.IPPacket;
  import jpcap.packet.ICMPPacket;
-/**
- *
- * @author Orlando
- */
+
 public class Receptor implements PacketReceiver {
  
     public Receptor() {

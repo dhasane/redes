@@ -3,16 +3,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import jpcap.*;
 
-//Camilo es [2]
-/**
- *
- * @author Orlando
- */
 public class Sniffer implements Runnable{
  
-    /**
-     * @param args the command line arguments
-     */
     boolean isRunning;
    
     NetworkInterface [] dispositivos;
@@ -21,9 +13,8 @@ public class Sniffer implements Runnable{
     public Sniffer() {
         isRunning = true;
         dispositivos = JpcapCaptor.getDeviceList();
-        
-        
-        
+         
+        System.out.println("cantidad de dispositivos : "+dispositivos.length);
         
     }
     public static void main(String[] args) {
@@ -34,7 +25,9 @@ public class Sniffer implements Runnable{
     @Override
     public void run() {
         try {
-            capturador = JpcapCaptor.openDevice(dispositivos[2], 65535, true, 20);
+//            Hamilton -> [4]
+//            Camilo -> [2]
+            capturador = JpcapCaptor.openDevice(dispositivos[4], 65535, true, 20);
             while(isRunning) {
                 capturador.processPacket(1, new Receptor());
             }
