@@ -25,8 +25,6 @@ public class Receptor implements PacketReceiver {
             ICMPPacket icmp= (ICMPPacket) packet;
             
             System.out.println(icmp.toString());
-          
-            byte[]b=icmp.data;
             try {
                 String str = new String(icmp.data,"UTF-8");
                 System.out.println("RECEIVED PACKET's DATA :" +str);
@@ -58,9 +56,18 @@ public class Receptor implements PacketReceiver {
              
             
         }
-        
-        
- 
+        if(packet instanceof IPPacket){
+            IPPacket ippacket = (IPPacket)packet;
+            if(ippacket.version == 4){
+                //Es ipv4
+                //System.out.println("IPV4---------------------------------------------------------");
+                
+            }
+            
+          
+        }
+         
+         
         if (packet instanceof TCPPacket) {
             /*
            TCPPacket tcp = (TCPPacket) packet;
