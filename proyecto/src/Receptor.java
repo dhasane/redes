@@ -1,3 +1,6 @@
+import java.io.UnsupportedEncodingException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import jpcap.PacketReceiver;
 import jpcap.packet.ARPPacket;
 import jpcap.packet.Packet;
@@ -20,20 +23,20 @@ public class Receptor implements PacketReceiver {
         //System.out.println("Nombre del paquete"+packet.getClass().getName());
         if(packet instanceof ICMPPacket){
             ICMPPacket icmp= (ICMPPacket) packet;
-            System.out.println(icmp.toString());
-            System.out.println("data "+icmp.data);
-            byte[]b=icmp.data;
-            String data="";
-            for(int i=0;i<b.length;i++)	
-                data=data+b;
-
-            System.out.println("RECEIVED PACKET's DATA :"+data);
-    
             
+            System.out.println(icmp.toString());
+          
+            byte[]b=icmp.data;
+            try {
+                String str = new String(icmp.data,"UTF-8");
+                System.out.println("RECEIVED PACKET's DATA :" +str);
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(Receptor.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
          if(packet instanceof ARPPacket)
         {
-           /*ARPPacket arp= (ARPPacket) packet;
+           ARPPacket arp= (ARPPacket) packet;
            System.out.println("To string "+arp.toString()); 
            System.out.println("Data "+arp.data);
            System.out.println("caplen "+arp.caplen);
@@ -51,7 +54,7 @@ public class Receptor implements PacketReceiver {
            System.out.println("target_hardaddr "+arp.target_hardaddr);
            System.out.println("target_protoaddr "+arp.target_protoaddr);
            System.out.println("usec "+arp.usec);
-            System.out.println("-----------------------------------------");*/
+           System.out.println("-----------------------------------------");
              
             
         }
@@ -59,7 +62,8 @@ public class Receptor implements PacketReceiver {
         
  
         if (packet instanceof TCPPacket) {
-           /* TCPPacket tcp = (TCPPacket) packet;
+            /*
+           TCPPacket tcp = (TCPPacket) packet;
             System.out.println("IP fuente " + tcp.src_ip
             + "\nPuerto fuente " + tcp.src_port
             + "\nIp dest " + tcp.dst_ip
@@ -76,8 +80,8 @@ public class Receptor implements PacketReceiver {
             else if(tcp.src_port == 21 || tcp.dst_port == 21 || tcp.dst_port == 22 || tcp.src_port == 22)
                 System.err.println("Paquetes que pasan por ftp " + ++Sniffer.ftp);
             else
-                System.err.println("Paquetes otros " + ++Sniffer.otros);*/
-               
+                System.err.println("Paquetes otros " + ++Sniffer.otros);
+              */
         }
      
     }
