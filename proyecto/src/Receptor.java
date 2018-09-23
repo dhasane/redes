@@ -56,6 +56,8 @@ public class Receptor implements PacketReceiver {
         if(packet instanceof IPPacket){
             IPPacket ippacket = (IPPacket)packet;
             if(ippacket.version == 4){
+                
+                
                 //Es ipv4
                 //System.out.println("IPV4---------------------------------------------------------");
                 
