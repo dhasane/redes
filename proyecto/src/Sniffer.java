@@ -22,12 +22,12 @@ public class Sniffer implements Runnable{
         s.run();
     }
  
-    @Override
+    @Override 
     public void run() {
         try {
 //            Hamilton -> [4]
 //            Camilo -> [2]
-            capturador = JpcapCaptor.openDevice(dispositivos[2], 65535, true, 20);
+            capturador = JpcapCaptor.openDevice(dispositivos[4], 65535, true, 20);
             while(isRunning) {
                 capturador.processPacket(1, new Receptor());
             }

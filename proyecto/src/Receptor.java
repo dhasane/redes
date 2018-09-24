@@ -87,7 +87,7 @@ public class Receptor implements PacketReceiver {
                 System.err.println("Paquetes que pasan por ftp " + ++Sniffer.ftp);
             else
                 System.err.println("Paquetes otros " + ++Sniffer.otros);
-              */
+//              */
         }
      
     }
