@@ -56,8 +56,6 @@ public class Receptor implements PacketReceiver {
         if(packet instanceof IPPacket){
             IPPacket ippacket = (IPPacket)packet;
             if(ippacket.version == 4){
-                
-                
                 //Es ipv4
                 //System.out.println("IPV4---------------------------------------------------------");
                 
@@ -65,31 +63,7 @@ public class Receptor implements PacketReceiver {
             
           
         }
-         
-         
-        if (packet instanceof TCPPacket) {
-            /*
-           TCPPacket tcp = (TCPPacket) packet;
-            System.out.println("IP fuente " + tcp.src_ip
-            + "\nPuerto fuente " + tcp.src_port
-            + "\nIp dest " + tcp.dst_ip
-            + "\nPuerto dest " + tcp.dst_port
-            + "\nLongitud " + tcp.length
-            + "\nHeader " +tcp.header
-            + "\nDatalink " + tcp.datalink
-            + "\n-----------------------------------------------");
-           if(tcp.ack){
-               System.out.println("ACK "+ tcp.ack_num);
-           }
-            if(tcp.src_port == 80 || tcp.src_port == 443 || tcp.dst_port == 80 || tcp.dst_port == 443)
-                System.err.println("Paquetes que pasan por web " + ++Sniffer.web);
-            else if(tcp.src_port == 21 || tcp.dst_port == 21 || tcp.dst_port == 22 || tcp.src_port == 22)
-                System.err.println("Paquetes que pasan por ftp " + ++Sniffer.ftp);
-            else
-                System.err.println("Paquetes otros " + ++Sniffer.otros);
-//              */
-        }
-     
+        
     }
    
 }
