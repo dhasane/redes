@@ -9,8 +9,5 @@
  * @author briam
  */
 public class PaqueteARP {
-
-    public PaqueteARP() {
-    }
     
 }

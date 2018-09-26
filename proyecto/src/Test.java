@@ -23,26 +23,33 @@ public class Test {
         sniffer=new Sniffer();
     }
 
-    
+    Test(Test test) {
+       this.sniffer=test.sniffer;
+    }
     public void setSniffer(Sniffer sniffer) {
         this.sniffer = sniffer;
     }
 
     public void llenarTabla(JTable TablaSniffer, String d, boolean modoDeCaptura) {
          //To change body of generated methods, choose Tools | Templates.
-       
+        DefaultTableModel model = (DefaultTableModel) TablaSniffer.getModel();
         sniffer.modificarInterfaceDeRed(d, modoDeCaptura);
-        sniffer.setTabla(TablaSniffer);
-        
+        Vector row = new Vector();
+            row.add("la");
+            row.add("verga");
+            row.add("esta");
+            row.add("joda");
+            row.add("esta");
+            row.add("funcionando");
+            row.add("xD");
+            model.addRow(row);
+<<<<<<< HEAD:proyectoUltimaVersion/src/Test.java
         sniffer.startTask();
-        
-   
-        
-        
-        
-            
-        
-        
+        System.out.println("iniciando con el llenado con tabla");
+ 
+=======
+        sniffer.run();
+>>>>>>> b0a77a1b2ac807f78b16e139d104a7e3c283c2b6:proyecto/src/Test.java
     }
 
    

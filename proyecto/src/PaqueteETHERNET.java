@@ -8,9 +8,6 @@
  *
  * @author briam
  */
-public class PaqueteARP {
-
-    public PaqueteARP() {
-    }
+public class PaqueteETHERNET {
     
 }

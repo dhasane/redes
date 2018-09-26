@@ -8,9 +8,9 @@
  *
  * @author briam
  */
-public class PaqueteARP {
+public class PaqueteICMP {
 
-    public PaqueteARP() {
+    public PaqueteICMP() {
     }
     
 }

@@ -8,9 +8,10 @@
  *
  * @author briam
  */
-public class PaqueteARP {
+class PaqueteIP {
 
-    public PaqueteARP() {
+    public PaqueteIP() {
     }
+    
     
 }

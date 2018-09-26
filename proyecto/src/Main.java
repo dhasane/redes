@@ -6,11 +6,11 @@
 
 /**
  *
- * @author briam
+ * @author danih
  */
-public class PaqueteARP {
-
-    public PaqueteARP() {
+public class Main {
+    public static void main(String args[]) {
+     
+        GUI gui = new GUI();
     }
-    
 }

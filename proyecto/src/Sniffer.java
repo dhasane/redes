@@ -3,7 +3,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JTable;
 import jpcap.*;
 
 public class Sniffer implements Runnable {
@@ -16,12 +15,6 @@ public class Sniffer implements Runnable {
     Thread hiloParaLlenarTabla;
     private volatile boolean paused = false;
     private final Object pauseLock = new Object();
-    JTable tabla;
-    int contador=0;
-
-    public void setTabla(JTable tabla) {
-        this.tabla = tabla;
-    }
     
     public void pause() {
         // you may want to throw an IllegalStateException if !running
@@ -99,16 +92,18 @@ public class Sniffer implements Runnable {
             capturador = JpcapCaptor.openDevice(dispositivo, 65535, modoDeCaptura, 20);
 
             while (isRunning) {
-                contador++;
 
                 synchronized (pauseLock) {
                     if (!isRunning) { // may have changed while waiting to
                         // synchronize on pauseLock
+                        System.out.println("EL hilo termina");
                         break;
                     }
                     if (paused) {
                         try {
-                            pauseLock.wait(); // will cause this Thread to block until 
+                            System.out.println("El hilo es pausado");
+                            pauseLock.wait(); 
+                            // will cause this Thread to block until 
                             // another thread calls pauseLock.notifyAll()
                             // Note that calling wait() will 
                             // relinquish the synchronized lock that this 
@@ -119,25 +114,19 @@ public class Sniffer implements Runnable {
                             break;
                         }
                         if (!isRunning) { // running might have changed since we paused
+                            System.out.println("EL hilo termina");
                             break;
                         }
                     }
                 }
-                Receptor receptor=new Receptor(tabla);
-                receptor.numero=contador;
-                Thread.sleep(100);
-                capturador.processPacket(1, receptor);
-                System.out.println("paquete recibido");
-                
-                
+
+                capturador.processPacket(1, new Receptor());
             }
             System.out.println("se ha detenido el sniffer");
             capturador.close();
 
         } catch (IOException ex) {
             ex.printStackTrace();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Sniffer.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
