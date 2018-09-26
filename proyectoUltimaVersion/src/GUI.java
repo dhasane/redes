@@ -12,47 +12,24 @@ import javax.swing.table.DefaultTableModel;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author briam
  */
-public class GUI extends javax.swing.JFrame implements Runnable{
+public class GUI extends javax.swing.JFrame {
 
-    
-
-    /**
-     * Creates new form GUI
-     */
-    Test test =new Test();
-    Thread hilo;
-    String d;
-    boolean modoDeCaptura;
+    Test test = new Test();
 
     public void setTablaSniffer(JTable TablaSniffer) {
         this.TablaSniffer = TablaSniffer;
     }
-    
 
-    private GUI(JTable TablaSniffer, String d, boolean modoDeCaptura, Test test) {
-        this.modoDeCaptura=modoDeCaptura;
-        this.d=d;
-        this.test=test;
-        setTablaSniffer(TablaSniffer);
-    }
-    @Override
-    public void run(){
-        
-        test.llenarTabla(TablaSniffer, d, modoDeCaptura);
-    }
-    
     public GUI() {
-        initComponents(); 
+        initComponents();
         inicio.enable(false);
         test.llenarComboBoxDispositivos(dispositivosCB);
         promiscuo.setSelected(true);
-        
-        
+
     }
 
     /**
@@ -76,7 +53,9 @@ public class GUI extends javax.swing.JFrame implements Runnable{
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         TablaSniffer = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        botonRegresar = new javax.swing.JButton();
+        botonContinuar = new javax.swing.JButton();
+        botonDeneter = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -145,10 +124,24 @@ public class GUI extends javax.swing.JFrame implements Runnable{
         ));
         jScrollPane1.setViewportView(TablaSniffer);
 
-        jButton1.setText("REGRESAR");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        botonRegresar.setText("REGRESAR");
+        botonRegresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                botonRegresarActionPerformed(evt);
+            }
+        });
+
+        botonContinuar.setText("CONTINUAR");
+        botonContinuar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonContinuarActionPerformed(evt);
+            }
+        });
+
+        botonDeneter.setText("DETENER");
+        botonDeneter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonDeneterActionPerformed(evt);
             }
         });
 
@@ -158,8 +151,12 @@ public class GUI extends javax.swing.JFrame implements Runnable{
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 731, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addComponent(botonDeneter, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(botonContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(136, 136, 136)
+                .addComponent(botonRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -167,7 +164,10 @@ public class GUI extends javax.swing.JFrame implements Runnable{
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botonRegresar)
+                    .addComponent(botonContinuar)
+                    .addComponent(botonDeneter))
                 .addGap(24, 24, 24))
         );
 
@@ -177,7 +177,7 @@ public class GUI extends javax.swing.JFrame implements Runnable{
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(inicio, javax.swing.GroupLayout.DEFAULT_SIZE, 736, Short.MAX_VALUE)
+            .addComponent(inicio)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -188,19 +188,36 @@ public class GUI extends javax.swing.JFrame implements Runnable{
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonIniciarActionPerformed
-         // TODO add your handling code here:
-     inicio.setSelectedIndex(1);
-     modelarTablaDeSniffer();
-     
-     
+        // TODO add your handling code here:
+        inicio.setSelectedIndex(1);
+        botonContinuar.setEnabled(false);
+        modelarTablaDeSniffer();
         
+
+
     }//GEN-LAST:event_botonIniciarActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void botonRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegresarActionPerformed
         // TODO add your handling code here:
         inicio.setSelectedIndex(0);
-    }//GEN-LAST:event_jButton1ActionPerformed
-    
+        test.terminarLlenadoDeTabla();
+    }//GEN-LAST:event_botonRegresarActionPerformed
+
+    private void botonDeneterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonDeneterActionPerformed
+        // TODO add your handling code here:
+        test.detenerLlenadoDeTabla();
+        botonContinuar.setEnabled(true);
+        botonDeneter.setEnabled(false);
+    }//GEN-LAST:event_botonDeneterActionPerformed
+
+    private void botonContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonContinuarActionPerformed
+        // TODO add your handling code here:
+        botonContinuar.setEnabled(false);
+        botonDeneter.setEnabled(true);
+        test.continuarLLenadoDeTabla();
+        
+    }//GEN-LAST:event_botonContinuarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -210,10 +227,6 @@ public class GUI extends javax.swing.JFrame implements Runnable{
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        
-        
-            
-
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -237,19 +250,18 @@ public class GUI extends javax.swing.JFrame implements Runnable{
                 new GUI().setVisible(true);
             }
         });
-        
-        
-        
-        
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup ModoCapura;
     private javax.swing.JTable TablaSniffer;
+    private javax.swing.JButton botonContinuar;
+    private javax.swing.JButton botonDeneter;
     private javax.swing.JButton botonIniciar;
+    private javax.swing.JButton botonRegresar;
     private javax.swing.JComboBox<String> dispositivosCB;
     private javax.swing.JTabbedPane inicio;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel2;
@@ -260,28 +272,25 @@ public class GUI extends javax.swing.JFrame implements Runnable{
     // End of variables declaration//GEN-END:variables
 
     private void modelarTablaDeSniffer() {
-        
-        
+
         DefaultTableModel model = new DefaultTableModel();
         this.TablaSniffer.setModel(model);
         TablaSniffer.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{},
                 new String[]{
-                    "Número", "Tiempo", "Fuente", "Destino", "Protocolo","Tamaño","Información"
+                    "Número", "Tiempo", "Fuente", "Destino", "Protocolo", "Tamaño", "Información"
                 }
         ));
-        d=dispositivosCB.getSelectedItem().toString();//PARA BUSCAR EL DISPOSITIVO SELECIONADO
-
-        if(promiscuo.isSelected()){
-            modoDeCaptura=true;
-        }else{
-            modoDeCaptura=false;
+        String dispositivoSeleccionado = dispositivosCB.getSelectedItem().toString();//PARA BUSCAR EL DISPOSITIVO SELECIONADO
+        Boolean modoDeCaptura = null;
+        if (promiscuo.isSelected()) {
+            modoDeCaptura = true;
+        } else {
+            modoDeCaptura = false;
         }
-        hilo=new Thread(new GUI(TablaSniffer,d,modoDeCaptura,test));
-        hilo.start();
-        //test.llenarTabla(TablaSniffer, d, modoDeCaptura);
-        
-        
+
+        test.llenarTabla(TablaSniffer, dispositivoSeleccionado, modoDeCaptura);
+
     }
-    
+
 }

@@ -5,108 +5,161 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import jpcap.*;
 
+public class Sniffer implements Runnable {
 
+    boolean isRunning;
+    boolean modoDeCaptura;
+    NetworkInterface[] dispositivos;
+    JpcapCaptor capturador;
+    NetworkInterface dispositivo;
+    Thread hiloParaLlenarTabla;
+    private volatile boolean paused = false;
+    private final Object pauseLock = new Object();
+    
+    public void pause() {
+        // you may want to throw an IllegalStateException if !running
+        paused = true;
+    }
 
-    public class Sniffer implements Runnable {
-
-        
-
-        boolean isRunning;
-        boolean modoDeCaptura;
-
-        NetworkInterface[] dispositivos;
-        JpcapCaptor capturador;
-        NetworkInterface dispositivoRealNoFake;
-
-        public boolean isModoDeCapura() {
-            return modoDeCaptura;
+    public void resume() {
+        synchronized (pauseLock) {
+            paused = false;
+            pauseLock.notifyAll(); // Unblocks thread
         }
+    }
 
-        public void setModoDeCapura(boolean modoDeCapura) {
-            this.modoDeCaptura = modoDeCapura;
+    public void startTask() {
+        hiloParaLlenarTabla = new Thread(this);
+        hiloParaLlenarTabla.start();
+    }
+
+    public void endTask() {
+        // Interrupt the thread so it unblocks any blocking call
+        //hiloParaLlenarTabla.interrupt();
+
+        // Change the states of variable
+        isRunning = false;
+        //hiloParaLlenarTabla=null;
+
+    }
+
+    public void setModoDeCaptura(boolean modoDeCaptura) {
+        this.modoDeCaptura = modoDeCaptura;
+    }
+
+    public boolean isModoDeCaptura() {
+        return modoDeCaptura;
+    }
+
+    public void setModoDeCapura(boolean modoDeCapura) {
+        this.modoDeCaptura = modoDeCapura;
+    }
+
+    public Sniffer() {
+
+        dispositivos = JpcapCaptor.getDeviceList();
+
+        System.out.println("cantidad de dispositivos : " + dispositivos.length);
+
+    }
+
+    public ArrayList<String> getNombreDispositivos() {
+        ArrayList<String> devices = new ArrayList<>();
+        for (NetworkInterface n : dispositivos) {
+            devices.add(n.name);
+            System.out.println(n.name);
         }
+        return devices;
+    }
 
-        public Sniffer() {
-            isRunning = true;
-            dispositivos = JpcapCaptor.getDeviceList();
-
-            System.out.println("cantidad de dispositivos : " + dispositivos.length);
-
-        }
-
-        public ArrayList<String> getNombreDispositivos() {
-            ArrayList<String> devices = new ArrayList<>();
-            for (NetworkInterface n : dispositivos) {
-                devices.add(n.name);
-                System.out.println(n.name);
+    private NetworkInterface buscarDispositivo(String nombre) {
+        for (NetworkInterface n : dispositivos) {
+            if (n.name.equals(nombre)) {
+                return n;
             }
-            return devices;
         }
+        return null;
+    }
 
-        private NetworkInterface buscarDispositivo(String nombre) {
-            for (NetworkInterface n : dispositivos) {
-                if (n.name.equals(nombre)) {
-                    return n;
-                }
-            }
-            return null;
-        }
+    @Override
+    public void run() {
 
-        @Override
-        public void run() {
-            try {
+        isRunning = true;
+        try {
 //            Hamilton -> [4]
 //            Camilo -> [2] Briam
 
-                capturador = JpcapCaptor.openDevice(dispositivoRealNoFake, 65535, modoDeCaptura, 20);
-                while (isRunning) {
-                    capturador.processPacket(1, new Receptor());
+            capturador = JpcapCaptor.openDevice(dispositivo, 65535, modoDeCaptura, 20);
+
+            while (isRunning) {
+
+                synchronized (pauseLock) {
+                    if (!isRunning) { // may have changed while waiting to
+                        // synchronize on pauseLock
+                        System.out.println("EL hilo termina");
+                        break;
+                    }
+                    if (paused) {
+                        try {
+                            System.out.println("El hilo es pausado");
+                            pauseLock.wait(); 
+                            // will cause this Thread to block until 
+                            // another thread calls pauseLock.notifyAll()
+                            // Note that calling wait() will 
+                            // relinquish the synchronized lock that this 
+                            // thread holds on pauseLock so another thread
+                            // can acquire the lock to call notifyAll()
+                            // (link with explanation below this code)
+                        } catch (InterruptedException ex) {
+                            break;
+                        }
+                        if (!isRunning) { // running might have changed since we paused
+                            System.out.println("EL hilo termina");
+                            break;
+                        }
+                    }
                 }
-                capturador.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
+
+                capturador.processPacket(1, new Receptor());
             }
-        }
+            System.out.println("se ha detenido el sniffer");
+            capturador.close();
 
-        public void setIsRunning(boolean isRunning) {
-            this.isRunning = isRunning;
-        }
-
-        public void setDispositivos(NetworkInterface[] dispositivos) {
-            this.dispositivos = dispositivos;
-        }
-
-        public void setCapturador(JpcapCaptor capturador) {
-            this.capturador = capturador;
-        }
-
-        public void setDispositivoRealNoFake(NetworkInterface dispositivoRealNoFake) {
-            this.dispositivoRealNoFake = dispositivoRealNoFake;
-        }
-
-        public boolean isIsRunning() {
-            return isRunning;
-        }
-
-        public NetworkInterface[] getDispositivos() {
-            return dispositivos;
-        }
-
-        public JpcapCaptor getCapturador() {
-            return capturador;
-        }
-
-        public NetworkInterface getDispositivoRealNoFake() {
-            return dispositivoRealNoFake;
-        }
-
-        void modificarInterfaceDeRed(String d, boolean modoDeCaptura2) {
-            this.setDispositivoRealNoFake(this.buscarDispositivo(d));
-            this.setModoDeCapura(modoDeCaptura2);
-            System.out.println(modoDeCaptura2);
-            System.out.println(dispositivoRealNoFake.name);//PARA VERIFICAR QUE SE MODIFICÓ DE FORMA CORRECTA
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
 
     }
 
+    public void setDispositivos(NetworkInterface[] dispositivos) {
+        this.dispositivos = dispositivos;
+    }
 
+    public void setCapturador(JpcapCaptor capturador) {
+        this.capturador = capturador;
+    }
+
+    public void setDispositivoRealNoFake(NetworkInterface dispositivo) {
+        this.dispositivo = dispositivo;
+    }
+
+    public NetworkInterface[] getDispositivos() {
+        return dispositivos;
+    }
+
+    public JpcapCaptor getCapturador() {
+        return capturador;
+    }
+
+    public NetworkInterface getDispositivo() {
+        return dispositivo;
+    }
+
+    void modificarInterfaceDeRed(String d, boolean modoDeCaptura2) {
+        this.setDispositivoRealNoFake(this.buscarDispositivo(d));
+        this.setModoDeCapura(modoDeCaptura2);
+        System.out.println(modoDeCaptura2);
+        System.out.println(dispositivo.name);//PARA VERIFICAR QUE SE MODIFICÓ DE FORMA CORRECTA
+    }
+
+}
