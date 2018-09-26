@@ -17,41 +17,67 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author briam
  */
-public class GUI extends javax.swing.JFrame implements Runnable{
+public class GUI extends javax.swing.JFrame implements Runnable
+{
 
-    
-
-    /**
-     * Creates new form GUI
-     */
-    Test test =new Test();
+    Test test;
     Thread hilo;
     String d;
     boolean modoDeCaptura;
+    
 
     public void setTablaSniffer(JTable TablaSniffer) {
         this.TablaSniffer = TablaSniffer;
     }
-    
-
+    /*
     private GUI(JTable TablaSniffer, String d, boolean modoDeCaptura, Test test) {
         this.modoDeCaptura=modoDeCaptura;
         this.d=d;
         this.test=test;
         setTablaSniffer(TablaSniffer);
+        
+        
+        /*
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new GUI().setVisible(true);
+            }
+        });//
+        
     }
+    */
+    /*
     @Override
     public void run(){
         
         test.llenarTabla(TablaSniffer, d, modoDeCaptura);
-    }
+    }*/
     
     public GUI() {
+        
+        this.test = new Test();
         initComponents(); 
         inicio.enable(false);
         test.llenarComboBoxDispositivos(dispositivosCB);
         promiscuo.setSelected(true);
-        
+        this.setVisible(true);
         
     }
 
@@ -204,16 +230,11 @@ public class GUI extends javax.swing.JFrame implements Runnable{
     /**
      * @param args the command line arguments
      */
+    
+    
+    /*
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         
-        
-            
-
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -231,7 +252,7 @@ public class GUI extends javax.swing.JFrame implements Runnable{
             java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
-        /* Create and display the form */
+        /* Create and display the form *//*
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new GUI().setVisible(true);
@@ -242,7 +263,7 @@ public class GUI extends javax.swing.JFrame implements Runnable{
         
         
     }
-
+*/
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup ModoCapura;
     private javax.swing.JTable TablaSniffer;
@@ -262,6 +283,10 @@ public class GUI extends javax.swing.JFrame implements Runnable{
     private void modelarTablaDeSniffer() {
         
         
+        Thread hhi = new Hilo_mensajes("primero",this.TablaSniffer);
+        
+        hhi.start();
+        ///*
         DefaultTableModel model = new DefaultTableModel();
         this.TablaSniffer.setModel(model);
         TablaSniffer.setModel(new javax.swing.table.DefaultTableModel(
@@ -277,11 +302,15 @@ public class GUI extends javax.swing.JFrame implements Runnable{
         }else{
             modoDeCaptura=false;
         }
-        hilo=new Thread(new GUI(TablaSniffer,d,modoDeCaptura,test));
-        hilo.start();
-        //test.llenarTabla(TablaSniffer, d, modoDeCaptura);
         
+        test.llenarTabla(TablaSniffer, d, modoDeCaptura);
+        //*/
         
+    }
+
+    @Override
+    public void run() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

@@ -49,13 +49,6 @@ public class Test {
             row.add("xD");
             model.addRow(row);
         sniffer.run();
-   
-        
-        
-        
-            
-        
-        
     }
 
    

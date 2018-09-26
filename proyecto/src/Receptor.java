@@ -1,6 +1,9 @@
 import java.io.UnsupportedEncodingException;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import jpcap.PacketReceiver;
 import jpcap.packet.ARPPacket;
 import jpcap.packet.Packet;
@@ -14,7 +17,24 @@ public class Receptor implements PacketReceiver {
     public Receptor() {
        
     }
-   
+    
+    void llenarTabla(JTable TablaSniffer, String d, boolean modoDeCaptura) {
+         //To change body of generated methods, choose Tools | Templates.
+        Sniffer sniffer = new Sniffer();
+         DefaultTableModel model = (DefaultTableModel) TablaSniffer.getModel();
+        sniffer.modificarInterfaceDeRed(d, modoDeCaptura);
+        Vector row = new Vector();
+            row.add("la");
+            row.add("verga");
+            row.add("esta");
+            row.add("joda");
+            row.add("esta");
+            row.add("funcionando");
+            row.add("xD");
+            model.addRow(row);
+        sniffer.run();
+    }
+    
     @Override
     public void receivePacket(Packet packet) {
         //System.out.println("Nombre del paquete"+packet.getClass().getName());
@@ -65,5 +85,6 @@ public class Receptor implements PacketReceiver {
         }
         
     }
+
    
 }
