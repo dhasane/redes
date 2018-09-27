@@ -9,7 +9,11 @@
  * @author briam
  */
 public class PaqueteICMP {
-
+    int version;//VERSION DEL PROTOCOLO IP
+    int Protocol ;//CODIGO DEL PROTOCOLO....  MIRAR CODIGOS POR NOMBRE
+    int HeaderLength;//TAMAÑO DE LA TRAMA ETHERNET
+    int Identification;
+    String IdentificationHexa;
     public PaqueteICMP() {
     }
     

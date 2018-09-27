@@ -97,7 +97,7 @@ public class Sniffer implements Runnable {
 //            Camilo -> [2] Briam
 
             capturador = JpcapCaptor.openDevice(dispositivo, 65535, modoDeCaptura, 20);
-
+            long startTime = System.currentTimeMillis();
             while (isRunning) {
                 contador++;
 
@@ -125,11 +125,17 @@ public class Sniffer implements Runnable {
                 }
                 Receptor receptor=new Receptor(tabla);
                 receptor.numero=contador;
-                Thread.sleep(200);
+                receptor.tiempoAnterior = startTime;
+
+                
+                Thread.sleep(100);
+                
+                
+              
                 capturador.processPacket(1, receptor);
-                System.out.println("paquete recibido"+receptor.numero);
-                
-                
+             
+            
+                 
             }
             System.out.println("se ha detenido el sniffer");
             capturador.close();

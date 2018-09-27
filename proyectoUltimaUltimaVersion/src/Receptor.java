@@ -17,7 +17,10 @@ import jpcap.packet.ICMPPacket;
 public class Receptor implements PacketReceiver {
     JTable tabla=null; 
     int numero;
+    long tiempoAnterior;
     PaqueteETHERNET ethernet;
+    
+    
    public Receptor(JTable tabla) {
        this.tabla=tabla;
     }
@@ -27,38 +30,34 @@ public class Receptor implements PacketReceiver {
        if (packet instanceof ARPPacket) {
             //arp y ethernet
             ethernet=new PaqueteETHERNET();
-            System.out.println("ARP"+numero);
+            
             
         }
         if (packet instanceof IPPacket) {
             ethernet=new PaqueteETHERNET();
-            System.out.println("IP");
-            //Ip
-            IPPacket paquete = (IPPacket) packet;
-            PaqueteIP paqueteIp=captureIPFields(paquete);
-            
-            
-            
+            //IP
             DefaultTableModel model = (DefaultTableModel) tabla.getModel();
             Vector row = new Vector();
             row.add(numero);
-            row.add(paqueteIp.Identification);
-            row.add(paqueteIp.IdentificationHexa);
-            row.add(paqueteIp.HeaderLength);
-            row.add(paqueteIp.Protocol);
-            row.add(paqueteIp.version);
+            IPPacket paquete = (IPPacket) packet;
+            PaqueteIP paqueteIp=captureIPFields(paquete);
+            row.add((double)Math.round((System.currentTimeMillis() - this.tiempoAnterior)*0.001* 100d) / 100d);
+            
+            
+            
+            byte[] arreglo = {paquete.header[18], paquete.header[19]};
+            String IdentificationHexa = transformadorAHexa(arreglo);
+            row.add(IdentificationHexa);
+            row.add(20);
+            row.add(paquete.header[23]);
+            row.add(paquete.version);
             row.add("que hubo");
             model.addRow(row);
             
-
-            
-        }
-        if (packet instanceof ICMPPacket) {
+            if (packet instanceof ICMPPacket) {
                 //icmp
-                System.out.println("ICMP"+numero);
+                
             }
-        else{
-            System.out.println("OTRO *************************************");
         }
         //-----------------------------------------------------------------------------------
       
@@ -111,6 +110,7 @@ public class Receptor implements PacketReceiver {
         paqueteIp.IdentificationHexa=IdentificationHexa;
         return paqueteIp;
     }
+    
 
     @Override
     public void receivePacket(Packet packet) {  
