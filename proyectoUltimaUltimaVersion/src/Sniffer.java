@@ -125,9 +125,9 @@ public class Sniffer implements Runnable {
                 }
                 Receptor receptor=new Receptor(tabla);
                 receptor.numero=contador;
-                Thread.sleep(100);
+                Thread.sleep(200);
                 capturador.processPacket(1, receptor);
-                System.out.println("paquete recibido");
+                System.out.println("paquete recibido"+receptor.numero);
                 
                 
             }
