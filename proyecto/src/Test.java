@@ -48,7 +48,7 @@ public class Test {
    
     
     public void llenarComboBoxDispositivos( JComboBox dispositivosCB) {     
-        ArrayList<String> dispositivos=sniffer.getNombreDispositivos();
+        ArrayList<String> dispositivos = sniffer.getNombreDispositivos();
         for (String string : dispositivos) {
             dispositivosCB.addItem(string);
         }
