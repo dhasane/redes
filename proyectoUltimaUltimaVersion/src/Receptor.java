@@ -1,5 +1,7 @@
 
 import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,59 +15,105 @@ import jpcap.packet.EthernetPacket;
 import jpcap.packet.IPPacket;
 import jpcap.packet.ICMPPacket;
 
-
 public class Receptor implements PacketReceiver {
-    JTable tabla=null; 
+
+    JTable tabla = null;
     int numero;
     long tiempoAnterior;
-    PaqueteETHERNET ethernet;
-    
-    
-   public Receptor(JTable tabla) {
-       this.tabla=tabla;
+    Packet paquete;
+
+    public Packet getPaquete() {
+        return paquete;
     }
-   public void insertarEnTabla(Packet packet){
-       
-       //FILTRADO
-       if (packet instanceof ARPPacket) {
+
+    public void setPaquete(Packet paquete) {
+        this.paquete = paquete;
+    }
+
+    // paquete 
+    //get lista paquetes
+    //ahhhhhhhhh 
+    // hubiera explicado bien!!! :V
+    public Receptor(JTable tabla) {
+        this.tabla = tabla;
+    }
+
+    public void insertarEnTabla(Packet packet) {
+
+        //FILTRADO
+      
+    
+        if (packet instanceof ARPPacket|| packet instanceof ICMPPacket ||  packet instanceof IPPacket ) 
+        {
             //arp y ethernet
-            ethernet=new PaqueteETHERNET();
-            
-            
-        }
-        if (packet instanceof IPPacket) {
-            ethernet=new PaqueteETHERNET();
-            //IP
+
+            // lo que llevo pensando es que los paquetes tienen que ser aggarrados desde este punto
+            // pero para agregarlos a la lista esta que les digo 
+            // entonces si entra a cualqueira de las categorias, lo agrega a la lista
+            // y no hay forma de retornarlo despues :V "retornar"
+            //
+             paquete=packet;
             DefaultTableModel model = (DefaultTableModel) tabla.getModel();
             Vector row = new Vector();
-            row.add(numero);
-            IPPacket paquete = (IPPacket) packet;
-            PaqueteIP paqueteIp=captureIPFields(paquete);
-            row.add((double)Math.round((System.currentTimeMillis() - this.tiempoAnterior)*0.001* 100d) / 100d);
+            row.add(numero);//contador
+            
+           // PaqueteIP paqueteIp=captureIPFields(paquete);
+            row.add((double)Math.round((System.currentTimeMillis() - this.tiempoAnterior)*1* 100d) / 100d);//tiempo
+            byte[] areglo = { paquete.header[26], paquete.header[27], paquete.header[28],paquete.header[29]};
+            int[] direccionOrigenBytes = bytearray2intarray(areglo);             
+            String direccionOrigenString=""+direccionOrigenBytes[0]+"."+direccionOrigenBytes[1]+"."+direccionOrigenBytes[2]+"."+direccionOrigenBytes[3];
+            row.add(direccionOrigenString);
+            
+            byte[] areglo2 = { paquete.header[30], paquete.header[31], paquete.header[32],paquete.header[33]};
+            direccionOrigenBytes = bytearray2intarray(areglo2);             
+            String direccionOrigenString2=""+direccionOrigenBytes[0]+"."+direccionOrigenBytes[1]+"."+direccionOrigenBytes[2]+"."+direccionOrigenBytes[3];
+            row.add(direccionOrigenString2);
+            
+            byte[] arregloProtocolo = {paquete.header[23]};
+            int[] protocolo = bytearray2intarray(arregloProtocolo); 
+            row.add(protocolo[0]);
+            
+           
             
             
             
-            byte[] arreglo = {paquete.header[18], paquete.header[19]};
-            String IdentificationHexa = transformadorAHexa(arreglo);
-            row.add(IdentificationHexa);
-            row.add(20);
-            row.add(paquete.header[23]);
-            row.add(paquete.version);
+            //------------
+            
+            
+             ByteBuffer bb=ByteBuffer.allocate(2);
+             bb.order(ByteOrder.LITTLE_ENDIAN);
+             bb.put(paquete.header[17]);
+             bb.put(paquete.header[16]);
+             short tamanioDecimal=bb.getShort(0);
+             row.add(tamanioDecimal);
+             
+             
+           
+             
+            /* short TypeOfService=bb.getShort(0);
+            row.add(TypeOfService);
+            row.add("lol");
             row.add("que hubo");
-            model.addRow(row);
-            
-            if (packet instanceof ICMPPacket) {
-                //icmp
-                
-            }
+            */model.addRow(row);
+             
         }
+
+        //IP
         //-----------------------------------------------------------------------------------
-      
-        
-   }
+    }
+
+    public int[] bytearray2intarray(byte[] barray)
+            {
+              int[] iarray = new int[barray.length];
+              int i = 0;
+              for (byte b : barray)
+                  iarray[i++] = b & 0xff;
+              return iarray;
+            }
+   
 
     public String byteToBinaryString(byte b) {
-        
+
         String s1 = String.format("%8s", Integer.toBinaryString(b & 0xFF)).replace(' ', '0');
         System.out.println(s1);
         return s1;
@@ -89,10 +137,8 @@ public class Receptor implements PacketReceiver {
         int Identification = paquete.ident;
         byte[] arreglo = {paquete.header[18], paquete.header[19]};
         String IdentificationHexa = transformadorAHexa(arreglo);
-        
-        
-        //----------------------IMPRESION PARA CONTROL-----------------------------------------
 
+        //----------------------IMPRESION PARA CONTROL-----------------------------------------
         //String TotalLength=transformador();
         /*System.out.println("Paquete IP------------------------"
                 + "\nVersion " + version
@@ -101,22 +147,23 @@ public class Receptor implements PacketReceiver {
                 + "\nIdentificationInt " + Identification
                 + "\nIdentificationHexa " + IdentificationHexa
                 + "\n");
-        */
+         */
         //ASIGNACION DE VARIABLES A LA CLASE----------------------------------------------------
-        paqueteIp.HeaderLength=HeaderLength;
-        paqueteIp.Identification=Identification;
-        paqueteIp.Protocol=Protocol;
-        paqueteIp.version=version;
-        paqueteIp.IdentificationHexa=IdentificationHexa;
+        paqueteIp.HeaderLength = HeaderLength;
+        paqueteIp.Identification = Identification;
+        paqueteIp.Protocol = Protocol;
+        paqueteIp.version = version;
+        paqueteIp.IdentificationHexa = IdentificationHexa;
         return paqueteIp;
     }
-    
 
     @Override
-    public void receivePacket(Packet packet) {  
+    public void receivePacket(Packet packet) {
         
+        
+
         insertarEnTabla(packet);
-   
+
     }
 
 }

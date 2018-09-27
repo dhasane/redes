@@ -1,10 +1,13 @@
 
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTable;
 import jpcap.*;
+import jpcap.packet.Packet;
 
 public class Sniffer implements Runnable {
 
@@ -18,7 +21,13 @@ public class Sniffer implements Runnable {
     private final Object pauseLock = new Object();
     JTable tabla;
     int contador=0;
-
+    Vector<Packet> vectorcito;
+    
+    public Vector<Packet> darVectoricito()
+    {
+        return vectorcito;
+    }
+    
     public void setTabla(JTable tabla) {
         this.tabla = tabla;
     }
@@ -127,13 +136,9 @@ public class Sniffer implements Runnable {
                 receptor.numero=contador;
                 receptor.tiempoAnterior = startTime;
 
-                
-                Thread.sleep(100);
-                
-                
-              
                 capturador.processPacket(1, receptor);
-             
+                
+                vectorcito.add(receptor.getPaquete());
             
                  
             }
@@ -142,8 +147,6 @@ public class Sniffer implements Runnable {
 
         } catch (IOException ex) {
             ex.printStackTrace();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Sniffer.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

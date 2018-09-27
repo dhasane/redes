@@ -5,6 +5,10 @@ import javax.swing.JComboBox;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import jpcap.packet.ARPPacket;
+import jpcap.packet.ICMPPacket;
+import jpcap.packet.IPPacket;
+import jpcap.packet.Packet;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -35,17 +39,30 @@ public class Test {
         sniffer.setTabla(TablaSniffer);
         
         sniffer.startTask();
-        
-   
-        
-        
-        
-            
-        
-        
     }
 
-   
+    public Vector<String> conseguirDaticos(int fila)
+    {
+        Vector<Packet> vectorPaquetes = sniffer.darVectoricito();
+        Packet paquete = vectorPaquetes.get(fila); // saco el valor necesario 
+        
+        Vector<String> texto = null;
+        
+        if (paquete instanceof ARPPacket)
+        {
+            // falta sacar datos 
+        }
+        else if (paquete instanceof ICMPPacket ) 
+        {
+            
+        }
+        else if  (paquete instanceof IPPacket )
+        {
+            
+        }
+        
+        return texto;
+    }
     
     public void llenarComboBoxDispositivos( JComboBox dispositivosCB) {     
         ArrayList<String> dispositivos=sniffer.getNombreDispositivos();
@@ -68,6 +85,4 @@ public class Test {
         sniffer.resume();
     }
 
-    
-    
 }
