@@ -1,4 +1,7 @@
+package RecepcionDatos;
 
+
+import RecepcionDatos.Sniffer;
 import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.JComboBox;
@@ -23,30 +26,16 @@ public class Test {
         sniffer=new Sniffer();
     }
 
-    
     public void setSniffer(Sniffer sniffer) {
         this.sniffer = sniffer;
     }
 
     public void llenarTabla(JTable TablaSniffer, String d, boolean modoDeCaptura) {
-         //To change body of generated methods, choose Tools | Templates.
-       
         sniffer.modificarInterfaceDeRed(d, modoDeCaptura);
         sniffer.setTabla(TablaSniffer);
-        
         sniffer.startTask();
-        
-   
-        
-        
-        
-            
-        
-        
     }
 
-   
-    
     public void llenarComboBoxDispositivos( JComboBox dispositivosCB) {     
         ArrayList<String> dispositivos = sniffer.getNombreDispositivos();
         for (String string : dispositivos) {
@@ -54,20 +43,17 @@ public class Test {
         }
     }
 
-    void terminarLlenadoDeTabla() {
+    public void terminarLlenadoDeTabla() {
         sniffer.endTask();
         System.out.println("finalizó");
     }
 
-    void detenerLlenadoDeTabla() {
+    public void detenerLlenadoDeTabla() {
         sniffer.pause();
         
     }
 
-    void continuarLLenadoDeTabla() {
+    public void continuarLLenadoDeTabla() {
         sniffer.resume();
     }
-
-    
-    
 }

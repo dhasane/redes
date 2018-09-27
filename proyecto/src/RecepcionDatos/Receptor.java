@@ -1,4 +1,9 @@
+package RecepcionDatos;
 
+import Paquetes.PaqueteIP;
+//import Paquetes;
+
+import Paquetes.PaqueteETHERNET;
 import java.io.UnsupportedEncodingException;
 import java.util.Vector;
 import java.util.logging.Level;
