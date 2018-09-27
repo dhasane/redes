@@ -9,6 +9,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTable;
 import jpcap.*;
+import jpcap.packet.ARPPacket;
+import jpcap.packet.ICMPPacket;
+import jpcap.packet.IPPacket;
 import jpcap.packet.Packet;
 
 public class Sniffer implements Runnable {
@@ -144,11 +147,15 @@ public class Sniffer implements Runnable {
                 receptor.tiempoAnterior = startTime;
 
                 capturador.processPacket(1, receptor);
+                Packet packet;
+                packet = receptor.getPaquete();
                 
-                /*if (receptor.getPaquete() != null)
-                {
-                    vectorcito.add(receptor.getPaquete());
-                }*/
+                if (packet instanceof ARPPacket || packet instanceof ICMPPacket || packet instanceof IPPacket) {
+                //if (packet != null){
+                    System.out.println(" el paquete : "+receptor.getPaquete()+" \n");
+                
+                    //vectorcito.add(receptor.getPaquete());
+                }//*/
                 
             }
             System.out.println("se ha detenido el sniffer");

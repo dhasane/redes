@@ -212,9 +212,9 @@ public class GUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         inicio.setSelectedIndex(1);
         botonContinuar.setEnabled(false);
+        botonDeneter.setEnabled(true);
         modelarTablaDeSniffer();
-        
-
+        test.continuarLLenadoDeTabla();
 
     }//GEN-LAST:event_botonIniciarActionPerformed
 
