@@ -33,10 +33,8 @@ public class PaqueteETHERNET {
         this.ip = ip;
     }
    
-
     public PaqueteIP getIp() {
         return ip;
     }
    
-    
 }

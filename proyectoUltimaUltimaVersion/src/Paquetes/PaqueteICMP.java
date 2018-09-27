@@ -16,7 +16,51 @@ public class PaqueteICMP {
     int HeaderLength;//TAMAÑO DE LA TRAMA ETHERNET
     int Identification;
     String IdentificationHexa;
-    public PaqueteICMP() {
+    
+    public PaqueteICMP() 
+    {
+        
     }
+    
+    public int getversion() {
+        return version;
+    }
+
+    public int getHeaderLength() {
+        return HeaderLength;
+    }
+
+    public int getIdentification() {
+        return Identification;
+    }
+
+    public int getProtocol() {
+        return Protocol;
+    }
+
+    public String getIdentificationHexa() {
+        return IdentificationHexa;
+    }
+
+    public void setHeaderLength(int HeaderLength) {
+       this.HeaderLength = HeaderLength;
+    }
+
+    public void setIdentification(int Identification) {
+        this.Identification = Identification;
+    }
+
+    public void setProtocol(int Protocol) {
+        this.Protocol = Protocol;
+    }
+
+    public void setversion(int version) {
+        this.version = version;
+    }
+
+    public void setIdentificationHexa(String IdentificationHexa) {
+        this.IdentificationHexa = IdentificationHexa;
+    }
+    
     
 }

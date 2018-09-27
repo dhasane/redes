@@ -30,6 +30,11 @@ public class Sniffer implements Runnable {
         return vectorcito;
     }
     
+    public void agregarPaquete(Packet paquete)
+    {
+        vectorcito.add(paquete);
+    }
+    
     public void setTabla(JTable tabla) {
         this.tabla = tabla;
     }
@@ -134,15 +139,17 @@ public class Sniffer implements Runnable {
                         }
                     }
                 }
-                Receptor receptor=new Receptor(tabla);
+                Receptor receptor=new Receptor(tabla,this);
                 receptor.numero=contador;
                 receptor.tiempoAnterior = startTime;
 
                 capturador.processPacket(1, receptor);
                 
-                vectorcito.add(receptor.getPaquete());
-            
-                 
+                /*if (receptor.getPaquete() != null)
+                {
+                    vectorcito.add(receptor.getPaquete());
+                }*/
+                
             }
             System.out.println("se ha detenido el sniffer");
             capturador.close();

@@ -24,6 +24,17 @@ public class Receptor implements PacketReceiver {
     int numero;
     long tiempoAnterior;
     Packet paquete;
+    
+    Sniffer pp; 
+    /*
+    public Receptor(JTable tabla) {
+        this.tabla = tabla;
+    }//*/
+    
+    Receptor(JTable tabla, Sniffer aThis) {
+        this.tabla = tabla;
+        this.pp = aThis;
+    }
 
     public Packet getPaquete() {
         return paquete;
@@ -33,13 +44,7 @@ public class Receptor implements PacketReceiver {
         this.paquete = paquete;
     }
 
-    // paquete 
-    //get lista paquetes
-    //ahhhhhhhhh 
-    // hubiera explicado bien!!! :V
-    public Receptor(JTable tabla) {
-        this.tabla = tabla;
-    }
+    
 
     public void insertarEnTabla(Packet packet) {
 
@@ -55,7 +60,18 @@ public class Receptor implements PacketReceiver {
             // entonces si entra a cualqueira de las categorias, lo agrega a la lista
             // y no hay forma de retornarlo despues :V "retornar"
             //
-             paquete=packet;
+            System.out.println("-----------------");
+            System.out.println(packet.caplen);
+            System.out.println(packet.data);
+            System.out.println(packet.header);
+            System.out.println(packet.len);
+            System.out.println(packet.sec);
+            System.out.println(packet.usec);
+            
+            //pp.agregarPaquete(packet);
+            paquete = packet;
+            
+            
             DefaultTableModel model = (DefaultTableModel) tabla.getModel();
             Vector row = new Vector();
             row.add(numero);//contador
