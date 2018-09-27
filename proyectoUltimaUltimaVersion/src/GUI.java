@@ -6,6 +6,10 @@ import java.util.Vector;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import jpcap.packet.ARPPacket;
+import jpcap.packet.ICMPPacket;
+import jpcap.packet.IPPacket;
+import jpcap.packet.Packet;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -42,6 +46,7 @@ public class GUI extends javax.swing.JFrame {
     private void initComponents() {
 
         ModoCapura = new javax.swing.ButtonGroup();
+        jScrollPane2 = new javax.swing.JScrollPane();
         inicio = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         botonIniciar = new javax.swing.JButton();
@@ -56,6 +61,8 @@ public class GUI extends javax.swing.JFrame {
         botonRegresar = new javax.swing.JButton();
         botonContinuar = new javax.swing.JButton();
         botonDeneter = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        datosPaquete = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -106,7 +113,7 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(promiscuo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(no_promiscuo)
-                .addContainerGap(98, Short.MAX_VALUE))
+                .addContainerGap(164, Short.MAX_VALUE))
         );
 
         inicio.addTab("Inicio", jPanel2);
@@ -145,25 +152,36 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
+        datosPaquete.setColumns(20);
+        datosPaquete.setRows(5);
+        jScrollPane3.setViewportView(datosPaquete);
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 731, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(botonDeneter, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(botonContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(136, 136, 136)
-                .addComponent(botonRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(botonDeneter, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(botonContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(136, 136, 136)
+                        .addComponent(botonRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane3)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botonRegresar)
                     .addComponent(botonContinuar)
@@ -181,7 +199,9 @@ public class GUI extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(inicio)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(inicio, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -260,6 +280,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton botonDeneter;
     private javax.swing.JButton botonIniciar;
     private javax.swing.JButton botonRegresar;
+    private javax.swing.JTextArea datosPaquete;
     private javax.swing.JComboBox<String> dispositivosCB;
     private javax.swing.JTabbedPane inicio;
     private javax.swing.JLabel jLabel1;
@@ -267,6 +288,8 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JRadioButton no_promiscuo;
     private javax.swing.JRadioButton promiscuo;
     // End of variables declaration//GEN-END:variables
@@ -282,15 +305,17 @@ public class GUI extends javax.swing.JFrame {
                 }
         ));
         String dispositivoSeleccionado = dispositivosCB.getSelectedItem().toString();//PARA BUSCAR EL DISPOSITIVO SELECIONADO
-        Boolean modoDeCaptura = null;
-        if (promiscuo.isSelected()) {
-            modoDeCaptura = true;
-        } else {
-            modoDeCaptura = false;
-        }
 
-        test.llenarTabla(TablaSniffer, dispositivoSeleccionado, modoDeCaptura);
-
+        test.llenarTabla(TablaSniffer, dispositivoSeleccionado, promiscuo.isSelected());
     }
-
+    
+    void llenarDatosPaquete()
+    {
+        int fila = TablaSniffer.getSelectedRow(); // saco la parte presionada
+        
+        //Vector<Packet> vectorPaquetes = 
+        Vector<String> imprimir = test.conseguirDaticos(fila); // saco vector enterito 
+        
+        
+    }
 }
