@@ -28,12 +28,13 @@ public class Receptor implements PacketReceiver {
     }
    public void insertarEnTabla(Packet packet){
        
+       
        //FILTRADO
        if (packet instanceof ARPPacket) {
             //arp y ethernet
             ethernet=new PaqueteETHERNET();
             
-            
+            System.out.println(packet.getClass().getName());
         }
         if (packet instanceof IPPacket) {
             ethernet=new PaqueteETHERNET();
@@ -58,6 +59,7 @@ public class Receptor implements PacketReceiver {
 
             if (packet instanceof ICMPPacket) {
                 //icmp
+               
             }
         }
         //-----------------------------------------------------------------------------------
@@ -95,13 +97,13 @@ public class Receptor implements PacketReceiver {
         //----------------------IMPRESION PARA CONTROL-----------------------------------------
 
         //String TotalLength=transformador();
-        System.out.println("Paquete IP------------------------"
+        /*System.out.println("Paquete IP------------------------"
                 + "\nVersion " + version
                 + "\nProtocolo " + Protocol
                 + "\nHeaderLength " + HeaderLength
                 + "\nIdentificationInt " + Identification
                 + "\nIdentificationHexa " + IdentificationHexa
-                + "\n");
+                + "\n");*/
         
         //ASIGNACION DE VARIABLES A LA CLASE----------------------------------------------------
         paqueteIp.HeaderLength=HeaderLength;
@@ -116,7 +118,7 @@ public class Receptor implements PacketReceiver {
     public void receivePacket(Packet packet) {  
         
         insertarEnTabla(packet);
-   
+        
     }
 
 }

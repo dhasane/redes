@@ -1,3 +1,5 @@
+package RecepcionDatos;
+
 
 import java.util.ArrayList;
 import java.util.Vector;
@@ -71,17 +73,17 @@ public class Test {
         }
     }
 
-    void terminarLlenadoDeTabla() {
+    public void terminarLlenadoDeTabla() {
         sniffer.endTask();
         System.out.println("finalizó");
     }
 
-    void detenerLlenadoDeTabla() {
+    public void detenerLlenadoDeTabla() {
         sniffer.pause();
         
     }
 
-    void continuarLLenadoDeTabla() {
+    public void continuarLLenadoDeTabla() {
         sniffer.resume();
     }
 

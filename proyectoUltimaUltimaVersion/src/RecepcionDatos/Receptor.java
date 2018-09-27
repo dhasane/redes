@@ -1,4 +1,7 @@
+package RecepcionDatos;
 
+
+import Paquetes.PaqueteIP;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -149,11 +152,11 @@ public class Receptor implements PacketReceiver {
                 + "\n");
          */
         //ASIGNACION DE VARIABLES A LA CLASE----------------------------------------------------
-        paqueteIp.HeaderLength = HeaderLength;
-        paqueteIp.Identification = Identification;
-        paqueteIp.Protocol = Protocol;
-        paqueteIp.version = version;
-        paqueteIp.IdentificationHexa = IdentificationHexa;
+        paqueteIp.setHeaderLength(HeaderLength);                //= HeaderLength;
+        paqueteIp.setIdentification(Identification);            //= Identification;
+        paqueteIp.setProtocol(Protocol);                        // = Protocol;
+        paqueteIp.setversion(version);                          // = version; 
+        paqueteIp.setIdentificationHexa(IdentificationHexa);    // = IdentificationHexa;
         return paqueteIp;
     }
 

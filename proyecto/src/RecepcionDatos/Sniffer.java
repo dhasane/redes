@@ -129,11 +129,11 @@ public class Sniffer implements Runnable {
                 receptor.numero=contador;
                 Thread.sleep(100);
                 capturador.processPacket(1, receptor);
-                System.out.println("paquete recibido");
-                
+//                System.out.println("paquete recibido");
+//                System.out.println(
                 
             }
-            System.out.println("se ha detenido el sniffer");
+//            System.out.println("se ha detenido el sniffer");
             capturador.close();
 
         } catch (IOException ex) {

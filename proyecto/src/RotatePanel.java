@@ -46,7 +46,7 @@ public class RotatePanel extends JPanel {
         f.setLocationRelativeTo(null);
         f.setVisible(true);
     }
-
+/*
     public static void main(String[] args) {
 //        EventQueue.invokeLater(new Runnable() {
 
@@ -66,6 +66,6 @@ public class RotatePanel extends JPanel {
             public void run() {
                 new RotatePanel().display();
             }
-        });*/
-    }
+        });
+    }*/
 }
