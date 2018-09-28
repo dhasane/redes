@@ -1,9 +1,12 @@
 
 import RecepcionDatos.Red;
+import com.sun.prism.impl.PrismSettings;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -214,12 +217,20 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_botonIniciarActionPerformed
 
     private void botonRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegresarActionPerformed
+        
+        red.detenerLlenadoDeTabla();
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
         inicio.setSelectedIndex(0);
         red.terminarLlenadoDeTabla();
     }//GEN-LAST:event_botonRegresarActionPerformed
 
     private void botonDeneterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonDeneterActionPerformed
         red.detenerLlenadoDeTabla();
+        
         botonContinuar.setEnabled(true);
         botonDeneter.setEnabled(false);
     }//GEN-LAST:event_botonDeneterActionPerformed

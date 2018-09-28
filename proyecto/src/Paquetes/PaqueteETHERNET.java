@@ -14,27 +14,48 @@ import Paquetes.PaqueteIP;
  * @author briam
  */
 public class PaqueteETHERNET {
-   PaqueteARP arp;
-   PaqueteIP ip;
+   String MACdestination;//DIRECCION MAC DE DESTINO (0-5)
+   String MACsource;//DIRECCION MAC DE DESTINO(6-11)
+   String type;//PROTOCOLO UTILIZADO A CONTINUACION(12-13)
 
+    public PaqueteETHERNET(String destination, String source, String type) {
+        this.MACdestination = destination;
+        this.MACsource = source;
+        this.type = type;
+    }
+
+   
+   
     public PaqueteETHERNET() {
        
     }
 
-    public PaqueteARP getArp() {
-        return arp;
+    public String getMACDestination() {
+        return MACdestination;
     }
 
-    public void setArp(PaqueteARP arp) {
-        this.arp = arp;
+    public String getMACSource() {
+        return MACsource;
     }
 
-    public void setIp(PaqueteIP ip) {
-        this.ip = ip;
+    public String getType() {
+        return type;
     }
-   
-    public PaqueteIP getIp() {
-        return ip;
+
+    public void setMACDestination(String destination) {
+        this.MACdestination = destination;
     }
+
+    public void setMACSource(String source) {
+        this.MACsource = source;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+    
+    
+
+    
    
 }

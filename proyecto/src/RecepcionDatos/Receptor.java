@@ -38,7 +38,7 @@ public class Receptor implements PacketReceiver {
 
     public void insertarEnTablaPrimeraSeccion(Packet packet) {
 
-        //FILTRADO
+        
         if (packet instanceof ARPPacket || packet instanceof ICMPPacket || packet instanceof IPPacket) 
         {
             
@@ -117,12 +117,12 @@ public class Receptor implements PacketReceiver {
     public PaqueteIP captureIPFields(IPPacket paquete) {
         //---------CREACION DE VARIABLES DE IP--------------------------------------------
         PaqueteIP paqueteIp = new PaqueteIP();
-        int version = paquete.version;//VERSION DEL PROTOCOLO IP
+        /*int version = paquete.version;//VERSION DEL PROTOCOLO IP
         int Protocol = paquete.header[23];//CODIGO DEL PROTOCOLO....  MIRAR CODIGOS POR NOMBRE
         int HeaderLength = 20;//TAMAÑO DE LA TRAMA ETHERNET
         int Identification = paquete.ident;
         byte[] arreglo = {paquete.header[18], paquete.header[19]};
-        String IdentificationHexa = transformadorAHexa(arreglo);
+        String IdentificationHexa = transformadorAHexa(arreglo);*/
 
         //----------------------IMPRESION PARA CONTROL-----------------------------------------
         //String TotalLength=transformador();
@@ -135,11 +135,11 @@ public class Receptor implements PacketReceiver {
                 + "\n");
          */
         //ASIGNACION DE VARIABLES A LA CLASE----------------------------------------------------
-        paqueteIp.setHeaderLength(HeaderLength);                //= HeaderLength;
+        /*paqueteIp.setHeaderLength(HeaderLength);                //= HeaderLength;
         paqueteIp.setIdentification(Identification);            //= Identification;
         paqueteIp.setProtocol(Protocol);                        // = Protocol;
         paqueteIp.setversion(version);                          // = version; 
-        paqueteIp.setIdentificationHexa(IdentificationHexa);    // = IdentificationHexa;
+        paqueteIp.setIdentificationHexa(IdentificationHexa);    // = IdentificationHexa;*/
         return paqueteIp;
     }
 
