@@ -11,6 +11,7 @@ import jpcap.packet.ARPPacket;
 import jpcap.packet.ICMPPacket;
 import jpcap.packet.IPPacket;
 import jpcap.packet.Packet;
+import java.lang.String;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -47,7 +48,7 @@ public class Test {
     {
         Vector<Packet> vectorPaquetes = sniffer.darVectoricito();
         Packet paquete = vectorPaquetes.get(fila); // saco el valor necesario 
-        
+        System.out.println("EL PAQUETE SELECCIONADO FUE:"+paquete+"-----------------------");
         Vector<String> texto = null;
         
         if (paquete instanceof ARPPacket)

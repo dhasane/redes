@@ -130,6 +130,11 @@ public class GUI extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        TablaSniffer.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TablaSnifferMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(TablaSniffer);
 
         botonRegresar.setText("REGRESAR");
@@ -238,6 +243,11 @@ public class GUI extends javax.swing.JFrame {
         test.continuarLLenadoDeTabla();
         
     }//GEN-LAST:event_botonContinuarActionPerformed
+
+    private void TablaSnifferMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaSnifferMouseClicked
+        // TODO add your handling code here:
+        llenarDatosPaquete();
+    }//GEN-LAST:event_TablaSnifferMouseClicked
 
     /**
      * @param args the command line arguments

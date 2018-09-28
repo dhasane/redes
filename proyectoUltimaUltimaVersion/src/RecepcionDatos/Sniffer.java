@@ -1,7 +1,5 @@
 package RecepcionDatos;
 
-
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -25,23 +23,21 @@ public class Sniffer implements Runnable {
     private volatile boolean paused = false;
     private final Object pauseLock = new Object();
     JTable tabla;
-    int contador=0;
+    int contador = 1;
     Vector<Packet> vectorcito;
-    
-    public Vector<Packet> darVectoricito()
-    {
+
+    public Vector<Packet> darVectoricito() {
         return vectorcito;
     }
-    
-    public void agregarPaquete(Packet paquete)
-    {
+
+    public void agregarPaquete(Packet paquete) {
         vectorcito.add(paquete);
     }
-    
+
     public void setTabla(JTable tabla) {
         this.tabla = tabla;
     }
-    
+
     public void pause() {
         // you may want to throw an IllegalStateException if !running
         paused = true;
@@ -65,6 +61,7 @@ public class Sniffer implements Runnable {
 
         // Change the states of variable
         isRunning = false;
+        contador=1;
         //hiloParaLlenarTabla=null;
 
     }
@@ -84,6 +81,7 @@ public class Sniffer implements Runnable {
     public Sniffer() {
 
         dispositivos = JpcapCaptor.getDeviceList();
+        vectorcito=new Vector<>();
 
         System.out.println("cantidad de dispositivos : " + dispositivos.length);
 
@@ -112,56 +110,49 @@ public class Sniffer implements Runnable {
 
         isRunning = true;
         try {
-//            Hamilton -> [4]
-//            Camilo -> [2] Briam
-
+         
             capturador = JpcapCaptor.openDevice(dispositivo, 65535, modoDeCaptura, 20);
             long startTime = System.currentTimeMillis();
             while (isRunning) {
-                contador++;
+                
 
                 synchronized (pauseLock) {
-                    if (!isRunning) { // may have changed while waiting to
-                        // synchronize on pauseLock
+                    if (!isRunning) { 
                         break;
                     }
                     if (paused) {
                         try {
-                            pauseLock.wait(); // will cause this Thread to block until 
-                            // another thread calls pauseLock.notifyAll()
-                            // Note that calling wait() will 
-                            // relinquish the synchronized lock that this 
-                            // thread holds on pauseLock so another thread
-                            // can acquire the lock to call notifyAll()
-                            // (link with explanation below this code)
+                            pauseLock.wait(); 
                         } catch (InterruptedException ex) {
                             break;
                         }
-                        if (!isRunning) { // running might have changed since we paused
+                        if (!isRunning) { 
                             break;
                         }
                     }
                 }
-                Receptor receptor=new Receptor(tabla,this);
-                receptor.numero=contador;
+                Receptor receptor = new Receptor(tabla);
+                receptor.numero = contador;
                 receptor.tiempoAnterior = startTime;
-
+                
                 capturador.processPacket(1, receptor);
+                contador=receptor.numero;
                 Packet packet;
                 packet = receptor.getPaquete();
                 
-                if (packet instanceof ARPPacket || packet instanceof ICMPPacket || packet instanceof IPPacket) {
-                //if (packet != null){
-                    System.out.println(" el paquete : "+receptor.getPaquete()+" \n");
-                
-                    //vectorcito.add(receptor.getPaquete());
-                }//*/
-                
+                    if (packet != null) {
+                        System.out.println(" el paquete : " + receptor.getPaquete() + " \n");
+
+                        vectorcito.add(receptor.getPaquete());
+                    }
+               
+
             }
             System.out.println("se ha detenido el sniffer");
             capturador.close();
 
         } catch (IOException ex) {
+            
             ex.printStackTrace();
         }
 
