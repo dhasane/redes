@@ -140,11 +140,10 @@ public class Sniffer implements Runnable {
                 Packet packet;
                 packet = receptor.getPaquete();
                 
-                    if (packet != null) {
-                        System.out.println(" el paquete : " + receptor.getPaquete() + " \n");
-
-                        vectorcito.add(receptor.getPaquete());
-                    }
+                if (packet != null) {
+                    //System.out.println(" el paquete : " + receptor.getPaquete() + " \n");
+                    vectorcito.add(receptor.getPaquete());
+                }
                
 
             }

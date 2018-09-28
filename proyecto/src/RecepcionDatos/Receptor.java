@@ -23,14 +23,9 @@ public class Receptor implements PacketReceiver {
     int numero;
     long tiempoAnterior;
     Packet paquete=null;
-    
-    
-
-   
 
     Receptor(JTable tabla) {
         this.tabla = tabla;
-        
     }
 
     public Packet getPaquete() {
@@ -46,37 +41,15 @@ public class Receptor implements PacketReceiver {
         //FILTRADO
         if (packet instanceof ARPPacket || packet instanceof ICMPPacket || packet instanceof IPPacket) {
             
-            //System.out.println(packet.toString() + "\n");
-
-            //paquete = new Packet();
-
-            /*
-            paquete.caplen = packet.caplen;
-            paquete.data = packet.data;
-            paquete.header = packet.header;
-            paquete.len = packet.len;
-            paquete.sec = packet.sec;
-            paquete.usec = packet.usec;
-            /*/
             paquete = packet;
 
-            //*/
-            //pp.agregarPaquete(paquete);
-            /*System.out.println("-----------------");
-            System.out.println(packet.caplen);
-            System.out.println(packet.data);
-            System.out.println(packet.header);
-            System.out.println(packet.len);
-            System.out.println(packet.sec);
-            System.out.println(packet.usec);
-            //*/
-            System.out.println("-----------------\n 1 "+packet + "\n 2 " + paquete+"\n-----------------\n");
-            
+            //System.out.println("-----------------\n 1 "+packet + "\n 2 " + paquete+"\n-----------------\n");
             
             DefaultTableModel model = (DefaultTableModel) tabla.getModel();
             Vector row = new Vector();
             row.add(numero);//contador
             numero++;
+            
             // PaqueteIP paqueteIp=captureIPFields(paquete);
             row.add((double) Math.round((System.currentTimeMillis() - this.tiempoAnterior) * 1 * 100d) / 100d);//tiempo
             byte[] areglo = {paquete.header[26], paquete.header[27], paquete.header[28], paquete.header[29]};

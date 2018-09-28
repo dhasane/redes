@@ -1,5 +1,5 @@
 
-import RecepcionDatos.Test;
+import RecepcionDatos.Red;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -12,18 +12,9 @@ import jpcap.packet.ICMPPacket;
 import jpcap.packet.IPPacket;
 import jpcap.packet.Packet;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-/**
- *
- * @author briam
- */
 public class GUI extends javax.swing.JFrame {
 
-    Test test = new Test();
+    Red red = new Red();
 
     public void setTablaSniffer(JTable TablaSniffer) {
         this.TablaSniffer = TablaSniffer;
@@ -32,7 +23,7 @@ public class GUI extends javax.swing.JFrame {
     public GUI() {
         initComponents();
         inicio.enable(false);
-        test.llenarComboBoxDispositivos(dispositivosCB);
+        red.llenarComboBoxDispositivos(dispositivosCB);
         promiscuo.setSelected(true);
 
     }
@@ -214,44 +205,35 @@ public class GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonIniciarActionPerformed
-        // TODO add your handling code here:
         inicio.setSelectedIndex(1);
         botonContinuar.setEnabled(false);
         botonDeneter.setEnabled(true);
         modelarTablaDeSniffer();
-        test.continuarLLenadoDeTabla();
+        red.continuarLLenadoDeTabla();
 
     }//GEN-LAST:event_botonIniciarActionPerformed
 
     private void botonRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegresarActionPerformed
-        // TODO add your handling code here:
         inicio.setSelectedIndex(0);
-        test.terminarLlenadoDeTabla();
+        red.terminarLlenadoDeTabla();
     }//GEN-LAST:event_botonRegresarActionPerformed
 
     private void botonDeneterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonDeneterActionPerformed
-        // TODO add your handling code here:
-        test.detenerLlenadoDeTabla();
+        red.detenerLlenadoDeTabla();
         botonContinuar.setEnabled(true);
         botonDeneter.setEnabled(false);
     }//GEN-LAST:event_botonDeneterActionPerformed
 
     private void botonContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonContinuarActionPerformed
-        // TODO add your handling code here:
         botonContinuar.setEnabled(false);
         botonDeneter.setEnabled(true);
-        test.continuarLLenadoDeTabla();
-        
+        red.continuarLLenadoDeTabla();
     }//GEN-LAST:event_botonContinuarActionPerformed
 
     private void TablaSnifferMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaSnifferMouseClicked
-        // TODO add your handling code here:
         llenarDatosPaquete();
     }//GEN-LAST:event_TablaSnifferMouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -317,16 +299,20 @@ public class GUI extends javax.swing.JFrame {
         ));
         String dispositivoSeleccionado = dispositivosCB.getSelectedItem().toString();//PARA BUSCAR EL DISPOSITIVO SELECIONADO
 
-        test.llenarTabla(TablaSniffer, dispositivoSeleccionado, promiscuo.isSelected());
+        red.llenarTabla(TablaSniffer, dispositivoSeleccionado, promiscuo.isSelected());
     }
     
     void llenarDatosPaquete()
     {
         int fila = TablaSniffer.getSelectedRow(); // saco la parte presionada
         
-        //Vector<Packet> vectorPaquetes = 
-        Vector<String> imprimir = test.conseguirDaticos(fila); // saco vector enterito 
+        Vector<String> imprimir = red.conseguirDaticos(fila); // sale vector enterito 
         
+        for (int a = 0 ; a < imprimir.size() ; a ++)
+        {
+//            add(imprimir.get(a));
+//            datosPaquete. algo asi como add text o lo que sea 
+        }
         
     }
 }

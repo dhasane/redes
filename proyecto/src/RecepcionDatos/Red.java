@@ -23,10 +23,10 @@ import java.lang.String;
  *
  * @author briam
  */
-public class Test {
+public class Red {
     Sniffer sniffer;
 
-    public Test() {
+    public Red() {
         sniffer=new Sniffer();
     }
 
@@ -48,20 +48,33 @@ public class Test {
     {
         Vector<Packet> vectorPaquetes = sniffer.darVectoricito();
         Packet paquete = vectorPaquetes.get(fila); // saco el valor necesario 
-        System.out.println("EL PAQUETE SELECCIONADO FUE:"+paquete+"-----------------------");
+        
+        System.out.println("EL PAQUETE SELECCIONADO FUE:"+paquete+"\n-----------------------");
         Vector<String> texto = null;
         
+        System.out.print("tipo : ");
         if (paquete instanceof ARPPacket)
         {
-            // falta sacar datos 
+            System.out.println(" ARP");
+            ARPPacket arp = (ARPPacket) paquete;
+           
+            System.out.println(arp);
         }
         else if (paquete instanceof ICMPPacket ) 
         {
+            System.out.println(" ICMP");
+            ICMPPacket icmp = (ICMPPacket) paquete;
             
+            System.out.println(icmp);
         }
         else if  (paquete instanceof IPPacket )
         {
-            
+            System.out.println(" IP");
+            IPPacket ip = (IPPacket) paquete;
+            texto.add(""+ip.datalink);
+            texto.add(""+ip);
+//            System.out.println(ip.datalink);
+//            System.out.println(ip);
         }
         
         return texto;
