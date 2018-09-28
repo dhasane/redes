@@ -22,7 +22,7 @@ public class Receptor implements PacketReceiver {
     JTable tabla = null;
     int numero;
     long tiempoAnterior;
-    Packet paquete=null;
+    Packet paquete = null;
 
     Receptor(JTable tabla) {
         this.tabla = tabla;
@@ -39,7 +39,8 @@ public class Receptor implements PacketReceiver {
     public void insertarEnTablaPrimeraSeccion(Packet packet) {
 
         //FILTRADO
-        if (packet instanceof ARPPacket || packet instanceof ICMPPacket || packet instanceof IPPacket) {
+        if (packet instanceof ARPPacket || packet instanceof ICMPPacket || packet instanceof IPPacket) 
+        {
             
             paquete = packet;
 

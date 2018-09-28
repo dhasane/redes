@@ -12,6 +12,9 @@ import jpcap.packet.ICMPPacket;
 import jpcap.packet.IPPacket;
 import jpcap.packet.Packet;
 import java.lang.String;
+import jpcap.packet.EthernetPacket;
+import jpcap.packet.TCPPacket;
+import jpcap.packet.UDPPacket;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -49,32 +52,56 @@ public class Red {
         Vector<Packet> vectorPaquetes = sniffer.darVectoricito();
         Packet paquete = vectorPaquetes.get(fila); // saco el valor necesario 
         
-        System.out.println("EL PAQUETE SELECCIONADO FUE:"+paquete+"\n-----------------------");
-        Vector<String> texto = null;
+        //System.out.println("EL PAQUETE SELECCIONADO FUE:"+paquete+"\n-----------------------");
+        Vector<String> texto = new Vector();
         
-        System.out.print("tipo : ");
+        
+        System.out.print("tipo : (" +paquete.getClass() +") ");
         if (paquete instanceof ARPPacket)
         {
-            System.out.println(" ARP");
             ARPPacket arp = (ARPPacket) paquete;
            
-            System.out.println(arp);
+            System.out.println(" ARP ("+arp.getClass()+") ");
+            
+            
+            texto.add(""+arp);
         }
         else if (paquete instanceof ICMPPacket ) 
         {
-            System.out.println(" ICMP");
             ICMPPacket icmp = (ICMPPacket) paquete;
             
-            System.out.println(icmp);
+            System.out.println(" ICMP ("+icmp.getClass()+") ");
+            texto.add(""+icmp);
+        }
+        else if (paquete instanceof TCPPacket ) 
+        {
+            TCPPacket tcp = (TCPPacket) paquete;
+            System.out.println(" TCP ("+tcp.getClass()+") ");
+            
+            texto.add(""+tcp);
+            
+            texto.add("fuente: "+tcp.src_ip);
+            texto.add("destino: "+tcp.dst_ip);
+            
+            
+        }
+        else if (paquete instanceof UDPPacket ) 
+        {
+            UDPPacket udp = (UDPPacket) paquete;
+            System.out.println(" UDP ("+udp.getClass()+") ");
+            texto.add(""+udp);
         }
         else if  (paquete instanceof IPPacket )
         {
-            System.out.println(" IP");
             IPPacket ip = (IPPacket) paquete;
+            System.out.println(" IP ("+ip.getClass()+")");
+            
+            //if (  instanceof EthernetPacket)
+            {
+                
+            }
             texto.add(""+ip.datalink);
-            texto.add(""+ip);
-//            System.out.println(ip.datalink);
-//            System.out.println(ip);
+            texto.add(""+ip.data);
         }
         
         return texto;

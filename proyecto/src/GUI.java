@@ -306,10 +306,14 @@ public class GUI extends javax.swing.JFrame {
     {
         int fila = TablaSniffer.getSelectedRow(); // saco la parte presionada
         
-        Vector<String> imprimir = red.conseguirDaticos(fila); // sale vector enterito 
+        Vector<String> imprimir = new Vector<>();
+        imprimir = red.conseguirDaticos(fila); // sale vector enterito 
+        System.out.println("---------------esto sera en el gui en vez de en la consola, eventualmente- tam"+imprimir.size());
         
-        for (int a = 0 ; a < imprimir.size() ; a ++)
+        //for (int a = 0 ; a < imprimir.size() ; a ++)
+        for(String palabra: imprimir)
         {
+            System.out.println(palabra);
 //            add(imprimir.get(a));
 //            datosPaquete. algo asi como add text o lo que sea 
         }

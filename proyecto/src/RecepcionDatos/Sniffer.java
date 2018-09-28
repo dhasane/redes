@@ -31,7 +31,9 @@ public class Sniffer implements Runnable {
     }
 
     public void agregarPaquete(Packet paquete) {
-        vectorcito.add(paquete);
+        if (paquete != null) {
+            vectorcito.add(paquete);
+        }
     }
 
     public void setTabla(JTable tabla) {
@@ -140,12 +142,8 @@ public class Sniffer implements Runnable {
                 Packet packet;
                 packet = receptor.getPaquete();
                 
-                if (packet != null) {
-                    //System.out.println(" el paquete : " + receptor.getPaquete() + " \n");
-                    vectorcito.add(receptor.getPaquete());
-                }
-               
-
+                this.agregarPaquete(packet);
+                
             }
             System.out.println("se ha detenido el sniffer");
             capturador.close();
