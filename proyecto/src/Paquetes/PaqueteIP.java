@@ -10,7 +10,7 @@ package Paquetes;
  *
  * @author briam
  */
-public class PaqueteIP extends PaqueteETHERNET{
+public class PaqueteIP{
     short version;//VERSION DEL PROTOCOLO IP(14-primer cuarteto)
     short HeaderLength;//TAMAÑO DE LA TRAMA ETHERNET(14-segundo cuarteto)
     //DIFFERENTIATED SERVICECS FIELD(15) ---------------------------------------
@@ -25,6 +25,8 @@ public class PaqueteIP extends PaqueteETHERNET{
     String HeaderChecksumHexa;//verificacion(24-25)
     String Source;//DIRECCION IP ORIGEN(26-29)
     String Destination;//DIRECCION IP DESTINO(30-33)
+    
+    PaqueteICMP icmp=null;
 
     public PaqueteIP(short version, short HeaderLength, short TotalLength, short Identification, String IdentificationHexa, String FlagsHexa, String flagCuartetoPrimerByteBinario, short TimeToLive, short Protocol, String ProtocolName, String HeaderChecksumHexa, String Source, String Destination) {
         this.version = version;

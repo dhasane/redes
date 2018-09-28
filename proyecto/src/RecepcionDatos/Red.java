@@ -1,6 +1,5 @@
 package RecepcionDatos;
 
-
 import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.JComboBox;
@@ -21,94 +20,68 @@ import jpcap.packet.UDPPacket;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author briam
  */
 public class Red {
+
     Sniffer sniffer;
 
     public Red() {
-        sniffer=new Sniffer();
+        sniffer = new Sniffer();
     }
 
-    
     public void setSniffer(Sniffer sniffer) {
         this.sniffer = sniffer;
     }
 
     public void llenarTabla(JTable TablaSniffer, String d, boolean modoDeCaptura) {
-         //To change body of generated methods, choose Tools | Templates.
-       
+        //To change body of generated methods, choose Tools | Templates.
+
         sniffer.modificarInterfaceDeRed(d, modoDeCaptura);
         sniffer.setTabla(TablaSniffer);
-        
+
         sniffer.startTask();
     }
 
-    public Vector<String> conseguirDaticos(int fila)
-    {
+    public Vector<String> conseguirDaticos(int fila) {
         Vector<Packet> vectorPaquetes = sniffer.darVectoricito();
         Packet paquete = vectorPaquetes.get(fila); // saco el valor necesario 
-        
+
         //System.out.println("EL PAQUETE SELECCIONADO FUE:"+paquete+"\n-----------------------");
         Vector<String> texto = new Vector();
-        
-        
-        System.out.print("tipo : (" +paquete.getClass() +") ");
-        if (paquete instanceof ARPPacket)
-        {
+
+        System.out.print("tipo : (" + paquete.getClass() + ") ");
+        if (paquete instanceof ARPPacket) {
             ARPPacket arp = (ARPPacket) paquete;
-           
-            System.out.println(" ARP ("+arp.getClass()+") ");
-            
-            
-            texto.add(""+arp);
-        }
-        else if (paquete instanceof ICMPPacket ) 
-        {
-            ICMPPacket icmp = (ICMPPacket) paquete;
-            
-            System.out.println(" ICMP ("+icmp.getClass()+") ");
-            texto.add(""+icmp);
-        }
-        else if (paquete instanceof TCPPacket ) 
-        {
-            TCPPacket tcp = (TCPPacket) paquete;
-            System.out.println(" TCP ("+tcp.getClass()+") ");
-            
-            texto.add(""+tcp);
-            
-            texto.add("fuente: "+tcp.src_ip);
-            texto.add("destino: "+tcp.dst_ip);
-            
-            
-        }
-        else if (paquete instanceof UDPPacket ) 
-        {
-            UDPPacket udp = (UDPPacket) paquete;
-            System.out.println(" UDP ("+udp.getClass()+") ");
-            texto.add(""+udp);
-        }
-        else if  (paquete instanceof IPPacket )
-        {
+
+            System.out.println(" ARP (" + arp.getClass() + ") ");
+
+            texto.add("" + arp);
+        } else if (paquete instanceof IPPacket) {
             IPPacket ip = (IPPacket) paquete;
-            System.out.println(" IP ("+ip.getClass()+")");
-            
-            //if (  instanceof EthernetPacket)
-            {
-                
+            if (ip.version == 4) {
+                System.out.println(" IP (" + ip.getClass() + ")");
+
+                texto.add("" + ip.datalink);
+                texto.add("" + ip.data);
+                if (paquete instanceof ICMPPacket) {
+                    ICMPPacket icmp = (ICMPPacket) paquete;
+
+                    System.out.println(" ICMP (" + icmp.getClass() + ") ");
+                    texto.add("" + icmp);
+
+                }
             }
-            texto.add(""+ip.datalink);
-            texto.add(""+ip.data);
+
         }
-        
+
         return texto;
     }
-    
-    public void llenarComboBoxDispositivos( JComboBox dispositivosCB) {     
-        ArrayList<String> dispositivos=sniffer.getNombreDispositivos();
+
+    public void llenarComboBoxDispositivos(JComboBox dispositivosCB) {
+        ArrayList<String> dispositivos = sniffer.getNombreDispositivos();
         for (String string : dispositivos) {
             dispositivosCB.addItem(string);
         }
@@ -121,7 +94,7 @@ public class Red {
 
     public void detenerLlenadoDeTabla() {
         sniffer.pause();
-        
+
     }
 
     public void continuarLLenadoDeTabla() {

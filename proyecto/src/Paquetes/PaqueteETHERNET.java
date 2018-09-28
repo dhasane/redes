@@ -17,12 +17,17 @@ public class PaqueteETHERNET {
    String MACdestination;//DIRECCION MAC DE DESTINO (0-5)
    String MACsource;//DIRECCION MAC DE DESTINO(6-11)
    String type;//PROTOCOLO UTILIZADO A CONTINUACION(12-13)
+   PaqueteARP arp=null;
+   PaqueteIP ip=null;
+   
 
     public PaqueteETHERNET(String destination, String source, String type) {
         this.MACdestination = destination;
         this.MACsource = source;
         this.type = type;
     }
+    
+    
 
    
    
