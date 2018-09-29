@@ -28,6 +28,35 @@ public class PaqueteIP{
     
     PaqueteICMP icmp=null;
 
+    @Override
+    public String toString() {
+        return "PaqueteIP{"+"\n" 
+              +"version=" + version +"\n"
+              +"HeaderLength=" + HeaderLength +"\n"
+              +"TotalLength=" + TotalLength+"\n"
+              +"Identification=" + Identification+"\n"
+              +"IdentificationHexa=" + IdentificationHexa+"\n"
+              +"FlagsHexa=" + FlagsHexa+"\n"
+              +"flagCuartetoPrimerByteBinario=" + flagCuartetoPrimerByteBinario+"\n"
+              +"TimeToLive=" + TimeToLive +"\n"
+              +"Protocol=" + Protocol+"\n"
+              +"ProtocolName=" + ProtocolName+"\n"
+              +"HeaderChecksumHexa=" + HeaderChecksumHexa+"\n"
+              +"Source=" + Source +"\n"
+              +"Destination=" + Destination + '}';
+    }
+    
+    
+
+    public PaqueteICMP getIcmp() {
+        return icmp;
+    }
+
+    public void setIcmp(PaqueteICMP icmp) {
+        this.icmp = icmp;
+    }
+    
+    
     public PaqueteIP(short version, short HeaderLength, short TotalLength, short Identification, String IdentificationHexa, String FlagsHexa, String flagCuartetoPrimerByteBinario, short TimeToLive, short Protocol, String ProtocolName, String HeaderChecksumHexa, String Source, String Destination) {
         this.version = version;
         this.HeaderLength = HeaderLength;
