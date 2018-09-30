@@ -115,7 +115,6 @@ public final class Utils {
         iarray= b & 0xff; 
         return iarray;
     }
-
     public static String hexaStringToASCII(String cadena) {
 
         String[] parts = cadena.split("x");
