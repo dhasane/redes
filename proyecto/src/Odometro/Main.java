@@ -11,7 +11,12 @@ import javax.swing.JFrame;
  * and open the template in the editor.
  */
 public class Main {
-//*
+/*
+    
+    // esto es  solo para probar el odometro 
+    // como tal el odometro tiene dos partes 
+    // rotatepanel que es el panel en si que rota
+    // y contadorbits es la parte que recive los paquetes y cuenta la cantidad de bits 
     public static void main(String args[]) {
         
         
@@ -25,19 +30,12 @@ public class Main {
         ContadorBits cb = new ContadorBits(rp);
         
         
-        /*int num = -1;
-        
-        while (num != 0)
-        {
-            num = leer();
-            rp.rotar(num);
-        }//*/
     }//*/
     
-    static public int leer()
+   /* static public int leer()
     {
         Scanner keyboard = new Scanner(System.in);
         System.out.println("enter an integer");
         return keyboard.nextInt();
-    }
+    }*/
 }

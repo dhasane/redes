@@ -155,7 +155,6 @@ public class Sniffer implements Runnable {
                 Packet packet;
                 packet = receptor.getPaquete();
                 this.agregarPaquete(packet);
-                int longitud = packet.header.length;
             }
             System.out.println("Ha finalizado el sniffer");
             capturador.close();

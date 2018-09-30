@@ -1,24 +1,17 @@
 package Odometro;
 
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class RotatePanel extends JPanel {
 
-    int angulo;
+    long angulo;
 
     public RotatePanel() {
         this.angulo = 180;
@@ -43,7 +36,22 @@ public class RotatePanel extends JPanel {
     }
 
     public void rotar(int ang) {
-        this.angulo = 180 + ang;
+        
+        float val;// = ang ;
+        int max = 180000;
+        int angmax = 180;
+        
+        val = 100*ang/max; // porcentaje
+        System.out.println("---------------------------------------porc ----"+val);
+        val *= 1.8;
+        // cual porcentaje?
+        System.out.println("-------------------------------------------"+val);
+        // total == 180
+        this.angulo = 180 + (int)val;
+        
+        if (this.angulo >= 360){
+            this.angulo = 0;
+        }
         repaint();
     }
 

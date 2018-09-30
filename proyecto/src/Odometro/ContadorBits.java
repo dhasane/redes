@@ -28,13 +28,14 @@ public class ContadorBits implements Runnable //extends Thread
     long ini;
     long end;
     private int numHilos;
-    
+    private int cantHilos;
     Semaphore sem;
+    
+    
     
     public void startTask() {
         
-//        for (NetworkInterface disp : dispositivos) 
-        for(int a = 0 ; a < dispositivos.length ; a ++) 
+        for(int a = 0 ; a < cantHilos ; a ++) 
         {
             bitsSeg[a] = 0;
             hilo = new Thread(this);
@@ -55,8 +56,9 @@ public class ContadorBits implements Runnable //extends Thread
         dispositivos = JpcapCaptor.getDeviceList();
         ini = System.nanoTime();
         
-        bitsSeg = new int[dispositivos.length];
-        sem = new Semaphore(dispositivos.length,true);
+        cantHilos = dispositivos.length;
+        bitsSeg = new int[cantHilos];
+        sem = new Semaphore(cantHilos,true);
         
         
         this.startTask();
@@ -75,8 +77,6 @@ public class ContadorBits implements Runnable //extends Thread
     }
 
     void contarBitsSegundo(int length,int pos) {
-        
-//        System.out.println("es el hilo "+pos);
         end = System.nanoTime();
         
         long elapsedTime = end - ini;
@@ -89,17 +89,18 @@ public class ContadorBits implements Runnable //extends Thread
         } catch (InterruptedException ex) {
             Logger.getLogger(ContadorBits.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         if (act > anterior) // falta hacer un buen reconocimiento de segundo 
         {
             this.segundos++;
-            System.out.println("total en "+pos+" : "+ bitsSeg[pos]+"     seg : "+segundos);
+            //System.out.println("total en "+pos+" : "+ bitsSeg[pos]+"     seg : "+segundos);
             int total = 0 ;
-            for (int a = 0 ; a < bitsSeg.length ; a ++)
+            for (int a = 0 ; a < cantHilos ; a ++)
             {
-                total = bitsSeg[a];
+                total += bitsSeg[a];
                 bitsSeg[a] = 0;
             }
-            System.out.println("total "+total);
+            //System.out.println("total "+total);
             rp.rotar(total);
             this.anterior = act;
         }
