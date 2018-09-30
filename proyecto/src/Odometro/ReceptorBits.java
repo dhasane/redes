@@ -17,8 +17,10 @@ public class ReceptorBits implements PacketReceiver {
 
     Packet paquete;
     ContadorBits cb;
+    int pos;
     
-    ReceptorBits(ContadorBits aThis) {
+    ReceptorBits(ContadorBits aThis,int pos) {
+        this.pos = pos;
         paquete = null;
         this.cb = aThis;
     }
@@ -40,7 +42,7 @@ public class ReceptorBits implements PacketReceiver {
         }
         paquete = packet;
         int len = paquete.header.length;
-        cb.contarBitsSegundo(len);
+        cb.contarBitsSegundo(len,this.pos);
     }
 
 }
