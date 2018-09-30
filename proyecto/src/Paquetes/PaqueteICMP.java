@@ -26,6 +26,24 @@ public class PaqueteICMP extends PaqueteIP{
     
     String Data;//DATOS DEL PAQUETE O TRAMA(42-tamaño del paquete)
 
+    @Override
+    public String toString() {
+        return "PaqueteICMP{" + "TypeOfMessage=" + TypeOfMessage +"\n"
+                +"Code=" + Code+"\n"
+                +"CheckSumHexa=" + CheckSumHexa+"\n"
+                +"IdentifierBE=" + IdentifierBE+"\n"
+                +"IdentifierBEHexa=" + IdentifierBEHexa+"\n"
+                +"IdentifierLE=" + IdentifierLE+"\n"
+                +"IdentifierLEHexa=" + IdentifierLEHexa+"\n"
+                +"SequenceNumberBE=" + SequenceNumberBE+"\n"
+                +"SequenceNumberBEHexa=" + SequenceNumberBEHexa+"\n"
+                +"SequenceNumberLE=" + SequenceNumberLE+"\n"
+                +"SequenceNumberLEHexa=" + SequenceNumberLEHexa+"\n"
+                +"Data=" + Data + '}';
+    }
+    
+    
+
     public PaqueteICMP(short Type, short Code, String CheckSumHexa, short IdentifierBE, String IdentifierBEHexa, short IdentifierLE, String IdentifierLEHexa, short SequenceNumberBE, String SequenceNumberBEHexa, short SequenceNumberLE, String SequenceNumberLEHexa, String Data) {
         this.TypeOfMessage = Type;
         this.Code = Code;

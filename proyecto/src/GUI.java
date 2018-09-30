@@ -56,8 +56,8 @@ public class GUI extends javax.swing.JFrame {
         botonRegresar = new javax.swing.JButton();
         botonContinuar = new javax.swing.JButton();
         botonDeneter = new javax.swing.JButton();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        datosPaquete = new javax.swing.JTextArea();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tablaDatos = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -91,7 +91,7 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(botonIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(dispositivosCB, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(358, Short.MAX_VALUE))
+                .addContainerGap(614, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -113,17 +113,6 @@ public class GUI extends javax.swing.JFrame {
 
         inicio.addTab("Inicio", jPanel2);
 
-        TablaSniffer.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
         TablaSniffer.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 TablaSnifferMouseClicked(evt);
@@ -152,36 +141,33 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        datosPaquete.setColumns(20);
-        datosPaquete.setRows(5);
-        jScrollPane3.setViewportView(datosPaquete);
+        tablaDatos.setMaximumSize(new java.awt.Dimension(300, 64));
+        jScrollPane4.setViewportView(tablaDatos);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 731, Short.MAX_VALUE)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane4)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addComponent(botonDeneter, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(229, 229, 229)
                         .addComponent(botonContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(136, 136, 136)
-                        .addComponent(botonRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane3)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 286, Short.MAX_VALUE)
+                        .addComponent(botonRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botonRegresar)
                     .addComponent(botonContinuar)
@@ -212,7 +198,8 @@ public class GUI extends javax.swing.JFrame {
         botonContinuar.setEnabled(false);
         botonDeneter.setEnabled(true);
         modelarTablaDeSniffer();
-        red.continuarLLenadoDeTabla();
+        modelarTablaDeDatos();
+        //red.continuarLLenadoDeTabla();
 
     }//GEN-LAST:event_botonIniciarActionPerformed
 
@@ -242,7 +229,11 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_botonContinuarActionPerformed
 
     private void TablaSnifferMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaSnifferMouseClicked
-        llenarDatosPaquete();
+        
+        DefaultTableModel model = (DefaultTableModel) tablaDatos.getModel();
+        model.setRowCount(0);
+        llenarDatosPaquete(tablaDatos);
+        
     }//GEN-LAST:event_TablaSnifferMouseClicked
 
     public static void main(String args[]) {
@@ -258,21 +249,13 @@ public class GUI extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GUI().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new GUI().setVisible(true);
         });
 
     }
@@ -284,7 +267,6 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton botonDeneter;
     private javax.swing.JButton botonIniciar;
     private javax.swing.JButton botonRegresar;
-    private javax.swing.JTextArea datosPaquete;
     private javax.swing.JComboBox<String> dispositivosCB;
     private javax.swing.JTabbedPane inicio;
     private javax.swing.JLabel jLabel1;
@@ -293,9 +275,10 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JRadioButton no_promiscuo;
     private javax.swing.JRadioButton promiscuo;
+    private javax.swing.JTable tablaDatos;
     // End of variables declaration//GEN-END:variables
 
     private void modelarTablaDeSniffer() {
@@ -313,21 +296,20 @@ public class GUI extends javax.swing.JFrame {
         red.llenarTabla(TablaSniffer, dispositivoSeleccionado, promiscuo.isSelected());
     }
     
-    void llenarDatosPaquete()
+    void llenarDatosPaquete(JTable tablaDatos)
     {
-        int fila = TablaSniffer.getSelectedRow(); // saco la parte presionada
-        
-        Vector<String> imprimir = new Vector<>();
-        imprimir = red.conseguirDaticos(fila); // sale vector enterito 
-        System.out.println("---------------esto sera en el gui en vez de en la consola, eventualmente- tam"+imprimir.size());
-        
-        //for (int a = 0 ; a < imprimir.size() ; a ++)
-        for(String palabra: imprimir)
-        {
-            System.out.println(palabra);
-//            add(imprimir.get(a));
-//            datosPaquete. algo asi como add text o lo que sea 
-        }
-        
+       int fila = TablaSniffer.getSelectedRow(); // saco la parte presionada    
+       red.conseguirDaticos(fila, tablaDatos); // sale vector enterito      
+    }
+
+    private void modelarTablaDeDatos() {
+        DefaultTableModel model = new DefaultTableModel();
+        this.tablaDatos.setModel(model);
+        tablaDatos.setModel(new javax.swing.table.DefaultTableModel(
+                new Object[][]{},
+                new String[]{
+                    "Campo", "Contenido"
+                }
+        ));
     }
 }

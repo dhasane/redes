@@ -3,13 +3,8 @@ package RecepcionDatos;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JTable;
 import jpcap.*;
-import jpcap.packet.ARPPacket;
-import jpcap.packet.ICMPPacket;
-import jpcap.packet.IPPacket;
 import jpcap.packet.Packet;
 
 public class Sniffer implements Runnable {
@@ -20,11 +15,18 @@ public class Sniffer implements Runnable {
     JpcapCaptor capturador;
     NetworkInterface dispositivo;
     Thread hiloParaLlenarTabla;
-    private volatile boolean paused = false;
+    private volatile boolean paused;
     private final Object pauseLock = new Object();
     JTable tabla;
-    int contador = 1;
+    int contador;
     Vector<Packet> vectorcito;
+
+    public Sniffer() {
+        dispositivos = JpcapCaptor.getDeviceList();
+        vectorcito = new Vector<>();
+        paused = false;
+        contador = 1;
+    }
 
     public Vector<Packet> darVectoricito() {
         return vectorcito;
@@ -41,14 +43,14 @@ public class Sniffer implements Runnable {
     }
 
     public void pause() {
-        // you may want to throw an IllegalStateException if !running
+        
         paused = true;
     }
 
     public void resume() {
         synchronized (pauseLock) {
             paused = false;
-            pauseLock.notifyAll(); // Unblocks thread
+            pauseLock.notifyAll(); 
         }
     }
 
@@ -57,15 +59,9 @@ public class Sniffer implements Runnable {
         hiloParaLlenarTabla.start();
     }
 
-    public void endTask() {
-        // Interrupt the thread so it unblocks any blocking call
-        //hiloParaLlenarTabla.interrupt();
-
-        // Change the states of variable
+    public void endTask() {     
         isRunning = false;
-        contador=1;
-        //hiloParaLlenarTabla=null;
-
+        contador = 1;
     }
 
     public void setModoDeCaptura(boolean modoDeCaptura) {
@@ -78,15 +74,6 @@ public class Sniffer implements Runnable {
 
     public void setModoDeCapura(boolean modoDeCapura) {
         this.modoDeCaptura = modoDeCapura;
-    }
-
-    public Sniffer() {
-
-        dispositivos = JpcapCaptor.getDeviceList();
-        vectorcito=new Vector<>();
-
-        System.out.println("cantidad de dispositivos : " + dispositivos.length);
-
     }
 
     public ArrayList<String> getNombreDispositivos() {
@@ -106,56 +93,8 @@ public class Sniffer implements Runnable {
         }
         return null;
     }
-
-    @Override
-    public void run() {
-
-        isRunning = true;
-        try {
-         
-            capturador = JpcapCaptor.openDevice(dispositivo, 65535, modoDeCaptura, 20);
-            long startTime = System.currentTimeMillis();
-            while (isRunning) {
-                
-
-                synchronized (pauseLock) {
-                    if (!isRunning) { 
-                        break;
-                    }
-                    if (paused) {
-                        try {
-                            pauseLock.wait(); 
-                        } catch (InterruptedException ex) {
-                            break;
-                        }
-                        if (!isRunning) { 
-                            break;
-                        }
-                    }
-                }
-                Receptor receptor = new Receptor(tabla);
-                receptor.numero = contador;
-                receptor.tiempoAnterior = startTime;
-                
-                capturador.processPacket(1, receptor);
-                contador=receptor.numero;
-                Packet packet;
-                packet = receptor.getPaquete();
-                
-                this.agregarPaquete(packet);
-                
-            }
-            System.out.println("se ha detenido el sniffer");
-            capturador.close();
-
-        } catch (IOException ex) {
-            
-            ex.printStackTrace();
-        }
-
-    }
-
-    public void setDispositivos(NetworkInterface[] dispositivos) {
+    
+     public void setDispositivos(NetworkInterface[] dispositivos) {
         this.dispositivos = dispositivos;
     }
 
@@ -178,6 +117,51 @@ public class Sniffer implements Runnable {
     public NetworkInterface getDispositivo() {
         return dispositivo;
     }
+
+    @Override
+    public void run() {
+
+        isRunning = true;
+        try {
+
+            capturador = JpcapCaptor.openDevice(dispositivo, 65535, modoDeCaptura, 20);
+            long startTime = System.currentTimeMillis();
+            while (isRunning) {
+
+                synchronized (pauseLock) {
+                    if (!isRunning) {
+                        break;
+                    }
+                    if (paused) {
+                        try {
+                            pauseLock.wait();
+                        } catch (InterruptedException ex) {
+                            break;
+                        }
+                        if (!isRunning) {
+                            break;
+                        }
+                    }
+                }
+                Receptor receptor = new Receptor(tabla);
+                receptor.numero = contador;
+                receptor.tiempoAnterior = startTime;
+                capturador.processPacket(1, receptor);
+                contador = receptor.numero;
+                Packet packet;
+                packet = receptor.getPaquete();
+                this.agregarPaquete(packet);          
+            }
+            System.out.println("Ha finalizado el sniffer");
+            capturador.close();
+
+        } catch (IOException ex) {
+            
+        }
+
+    }
+
+   
 
     void modificarInterfaceDeRed(String d, boolean modoDeCaptura2) {
         this.setDispositivoRealNoFake(this.buscarDispositivo(d));
