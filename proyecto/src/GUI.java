@@ -1,26 +1,13 @@
 
-import Odometro.ContadorBits;
-import Odometro.RotatePanel;
 import RecepcionDatos.Red;
-import com.sun.prism.impl.PrismSettings;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
-import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import jpcap.packet.ARPPacket;
-import jpcap.packet.ICMPPacket;
-import jpcap.packet.IPPacket;
-import jpcap.packet.Packet;
 
 public class GUI extends javax.swing.JFrame {
 
-    Red red = new Red();
+    Red red = null;
 
     public void setTablaSniffer(JTable TablaSniffer) {
         this.TablaSniffer = TablaSniffer;
@@ -28,13 +15,13 @@ public class GUI extends javax.swing.JFrame {
 
     public GUI() {
         initComponents();
+        red = new Red(rp);
         inicio.enable(false);
         red.llenarComboBoxDispositivos(dispositivosCB);
         promiscuo.setSelected(true);
         
-        ContadorBits cb = new ContadorBits(rp);
         
-        
+        //ContadorBits cb = new ContadorBits(rp);
     }
 
     /**
@@ -110,7 +97,7 @@ public class GUI extends javax.swing.JFrame {
                             .addComponent(no_promiscuo)
                             .addComponent(jLabel2)
                             .addComponent(promiscuo))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 338, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 373, Short.MAX_VALUE)
                         .addComponent(contenedorOdometro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(198, 198, 198))
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -181,7 +168,7 @@ public class GUI extends javax.swing.JFrame {
         rp.setLayout(rpLayout);
         rpLayout.setHorizontalGroup(
             rpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 218, Short.MAX_VALUE)
         );
         rpLayout.setVerticalGroup(
             rpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -192,7 +179,7 @@ public class GUI extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(rp, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
+            .addComponent(rp, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -211,13 +198,14 @@ public class GUI extends javax.swing.JFrame {
                         .addComponent(botonDeneter, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(229, 229, 229)
                         .addComponent(botonContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 286, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 280, Short.MAX_VALUE)
                         .addComponent(botonRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 733, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(16, 16, 16))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -255,29 +243,20 @@ public class GUI extends javax.swing.JFrame {
 
     private void botonIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonIniciarActionPerformed
         inicio.setSelectedIndex(1);
+        //
         botonContinuar.setEnabled(false);
         botonDeneter.setEnabled(true);
         modelarTablaDeSniffer();
         modelarTablaDeDatos();
+        
         //red.continuarLLenadoDeTabla();
+        
 
     }//GEN-LAST:event_botonIniciarActionPerformed
 
-    private void botonRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegresarActionPerformed
-        
-        red.detenerLlenadoDeTabla();
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        inicio.setSelectedIndex(0);
-        red.terminarLlenadoDeTabla();
-    }//GEN-LAST:event_botonRegresarActionPerformed
-
     private void botonDeneterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonDeneterActionPerformed
         red.detenerLlenadoDeTabla();
-        
+
         botonContinuar.setEnabled(true);
         botonDeneter.setEnabled(false);
     }//GEN-LAST:event_botonDeneterActionPerformed
@@ -288,12 +267,23 @@ public class GUI extends javax.swing.JFrame {
         red.continuarLLenadoDeTabla();
     }//GEN-LAST:event_botonContinuarActionPerformed
 
+    private void botonRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegresarActionPerformed
+
+        red.detenerLlenadoDeTabla();
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        inicio.setSelectedIndex(0);
+        red.terminarLlenadoDeTabla();
+    }//GEN-LAST:event_botonRegresarActionPerformed
+
     private void TablaSnifferMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaSnifferMouseClicked
-        
+
         DefaultTableModel model = (DefaultTableModel) tablaDatos.getModel();
         model.setRowCount(0);
         llenarDatosPaquete(tablaDatos);
-        
     }//GEN-LAST:event_TablaSnifferMouseClicked
 //*
     public static void main(String args[]) {

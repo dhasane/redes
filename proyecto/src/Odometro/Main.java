@@ -11,7 +11,7 @@ import javax.swing.JFrame;
  * and open the template in the editor.
  */
 public class Main {
-/*
+//*
     
     // esto es  solo para probar el odometro 
     // como tal el odometro tiene dos partes 
@@ -27,6 +27,7 @@ public class Main {
         F.setSize(600,600);
         F.setVisible(true);
         F.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
         ContadorBits cb = new ContadorBits(rp);
         
         

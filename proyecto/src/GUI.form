@@ -69,7 +69,7 @@
                                   <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="promiscuo" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="338" max="32767" attributes="0"/>
+                              <EmptySpace pref="373" max="32767" attributes="0"/>
                               <Component id="contenedorOdometro" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="198" max="-2" attributes="0"/>
                           </Group>
@@ -196,16 +196,17 @@
                               <Component id="botonDeneter" min="-2" pref="143" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="229" max="-2" attributes="0"/>
                               <Component id="botonContinuar" min="-2" pref="141" max="-2" attributes="0"/>
-                              <EmptySpace pref="286" max="32767" attributes="0"/>
+                              <EmptySpace pref="280" max="32767" attributes="0"/>
                               <Component id="botonRegresar" min="-2" pref="148" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jScrollPane4" min="-2" pref="733" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="jPanel4" max="32767" attributes="0"/>
+                              <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -289,7 +290,7 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="rp" alignment="0" pref="232" max="32767" attributes="0"/>
+                      <Component id="rp" alignment="0" pref="218" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
@@ -304,7 +305,7 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="218" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">

@@ -1,5 +1,7 @@
 package RecepcionDatos;
 
+import Odometro.ContadorBits;
+import Odometro.RotatePanel;
 import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.JComboBox;
@@ -13,9 +15,11 @@ import javax.swing.table.DefaultTableModel;
 public class Red {
 
     Sniffer sniffer;
-
-    public Red() {
+    ContadorBits cb;
+    public Red(RotatePanel rp) {
         sniffer = new Sniffer();
+        cb = new ContadorBits(rp);
+        cb.startTask();
     }
 
     public void setSniffer(Sniffer sniffer) {
@@ -26,6 +30,7 @@ public class Red {
         sniffer.modificarInterfaceDeRed(d, modoDeCaptura);
         sniffer.setTabla(TablaSniffer);
         sniffer.startTask();
+        
     }
 
     public void conseguirDaticos(int fila, JTable tablaDatos) {
@@ -46,15 +51,18 @@ public class Red {
 
     public void terminarLlenadoDeTabla() {
         sniffer.endTask();
+        cb.endTask();
         System.out.println("finalizó");
     }
 
     public void detenerLlenadoDeTabla() {
         sniffer.pause();
+        cb.pause();
     }
 
     public void continuarLLenadoDeTabla() {
         sniffer.resume();
+        cb.resume();
     }
 
     public PaqueteETHERNET crearPaqueteEthernet(Packet packet) {

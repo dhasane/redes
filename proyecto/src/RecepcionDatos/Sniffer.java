@@ -47,7 +47,6 @@ public class Sniffer implements Runnable {
     }
 
     public void pause() {
-        
         paused = true;
     }
 

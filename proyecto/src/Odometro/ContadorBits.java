@@ -1,15 +1,11 @@
 package Odometro;
 
-import RecepcionDatos.Receptor;
-import RecepcionDatos.Red;
 import java.io.IOException;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jpcap.JpcapCaptor;
 import jpcap.NetworkInterface;
-import jpcap.packet.Packet;
 
 public class ContadorBits implements Runnable //extends Thread
 {
@@ -28,25 +24,25 @@ public class ContadorBits implements Runnable //extends Thread
     long ini;
     long end;
     private int numHilos;
-    private int cantHilos;
+    private final int cantHilos;
     Semaphore sem;
     
-    
+    boolean isRunning;
     
     public void startTask() {
         
+        // se llaman a los hilos 
         for(int a = 0 ; a < cantHilos ; a ++) 
         {
             bitsSeg[a] = 0;
             hilo = new Thread(this);
             hilo.start();
         }
-        
     }
         
     
     public ContadorBits(RotatePanel rrp) {
-        
+        isRunning = true;
         this.numHilos = 0;
         this.anterior = 0;
         this.segundos = 0 ;
@@ -61,12 +57,12 @@ public class ContadorBits implements Runnable //extends Thread
         sem = new Semaphore(cantHilos,true);
         
         
-        this.startTask();
+        //this.startTask();
     }
 
     public void pause() {
-
         paused = true;
+        rp.rotar(0);
     }
 
     public void resume() {
@@ -110,12 +106,14 @@ public class ContadorBits implements Runnable //extends Thread
         
         bitsSeg[pos] += length;
     }
-
+    
+    public void endTask() {
+        isRunning = false;
+    }
     @Override
     public void run() {
+        
         try {
-            
-
 //        semaforo
             sem.acquire();
         } catch (InterruptedException ex) {
@@ -127,7 +125,7 @@ public class ContadorBits implements Runnable //extends Thread
 //        fin semaforo
 
         // le dice a todos los dispositivos que miren por entradas
-        boolean isRunning = true;
+        
         try {
             NetworkInterface dispositivo;
 
@@ -159,7 +157,7 @@ public class ContadorBits implements Runnable //extends Thread
                 capturador.processPacket(1, receptor);
 
             }
-            System.out.println("Ha finalizado el sniffer");
+            //System.out.println("Ha finalizado el sniffer");
             capturador.close();
 
         } catch (IOException ex) {
@@ -169,4 +167,5 @@ public class ContadorBits implements Runnable //extends Thread
         
     }
 
+        
 }

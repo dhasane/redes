@@ -15,7 +15,6 @@ public class ReceptorBits implements PacketReceiver {
 
     @Override
     public void receivePacket(Packet packet) {
-        
         int len = 8 * packet.header.length;
         cb.contarBitsSegundo(len,this.pos);
     }
