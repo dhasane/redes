@@ -270,7 +270,7 @@ public class GUI extends javax.swing.JFrame {
         llenarDatosPaquete(tablaDatos);
         
     }//GEN-LAST:event_TablaSnifferMouseClicked
-//*
+/*
     public static void main(String args[]) {
         
         try {
@@ -343,4 +343,5 @@ public class GUI extends javax.swing.JFrame {
                 }
         ));
     }
+    
 }

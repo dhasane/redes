@@ -11,8 +11,10 @@ import javax.swing.JFrame;
  * and open the template in the editor.
  */
 public class Main {
-/*
+//*
     public static void main(String args[]) {
+        
+        
         
         RotatePanel rp = new RotatePanel();
         JFrame F = new JFrame();
@@ -20,14 +22,16 @@ public class Main {
         F.setSize(600,600);
         F.setVisible(true);
         F.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ContadorBits cb = new ContadorBits(rp);
         
-        int num = -1;
+        
+        /*int num = -1;
         
         while (num != 0)
         {
             num = leer();
             rp.rotar(num);
-        }
+        }//*/
     }//*/
     
     static public int leer()

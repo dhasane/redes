@@ -35,6 +35,10 @@ public class Sniffer implements Runnable {
     public void agregarPaquete(Packet paquete) {
         if (paquete != null) {
             vectorcito.add(paquete);
+            /*if(vectorcito.size() > 4000) // idea para no llenar de mas la memoria
+            {
+                vectorcito.remove(0);
+            }*/
         }
     }
 
@@ -150,13 +154,14 @@ public class Sniffer implements Runnable {
                 contador = receptor.numero;
                 Packet packet;
                 packet = receptor.getPaquete();
-                this.agregarPaquete(packet);          
+                this.agregarPaquete(packet);
+                int longitud = packet.header.length;
             }
             System.out.println("Ha finalizado el sniffer");
             capturador.close();
 
         } catch (IOException ex) {
-            
+
         }
 
     }
