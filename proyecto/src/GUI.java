@@ -1,4 +1,6 @@
 
+import static Odometro.Main.leer;
+import Odometro.RotatePanel;
 import RecepcionDatos.Red;
 import com.sun.prism.impl.PrismSettings;
 import java.util.ArrayList;
@@ -7,6 +9,7 @@ import java.util.Locale;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -28,7 +31,14 @@ public class GUI extends javax.swing.JFrame {
         inicio.enable(false);
         red.llenarComboBoxDispositivos(dispositivosCB);
         promiscuo.setSelected(true);
-
+        
+        RotatePanel rp = new RotatePanel();
+        rp.setVisible(true);
+        this.add(rp);
+//        contenedorOdometro.setVisible(true);
+        
+        int num = -1;
+        
     }
 
     /**
@@ -50,6 +60,7 @@ public class GUI extends javax.swing.JFrame {
         promiscuo = new javax.swing.JRadioButton();
         jLabel2 = new javax.swing.JLabel();
         no_promiscuo = new javax.swing.JRadioButton();
+        contenedorOdometro = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         TablaSniffer = new javax.swing.JTable();
@@ -78,6 +89,17 @@ public class GUI extends javax.swing.JFrame {
         ModoCapura.add(no_promiscuo);
         no_promiscuo.setText("No promiscuo");
 
+        javax.swing.GroupLayout contenedorOdometroLayout = new javax.swing.GroupLayout(contenedorOdometro);
+        contenedorOdometro.setLayout(contenedorOdometroLayout);
+        contenedorOdometroLayout.setHorizontalGroup(
+            contenedorOdometroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 196, Short.MAX_VALUE)
+        );
+        contenedorOdometroLayout.setVerticalGroup(
+            contenedorOdometroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 165, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -85,30 +107,43 @@ public class GUI extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(35, 35, 35)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(no_promiscuo)
-                    .addComponent(jLabel2)
-                    .addComponent(promiscuo)
-                    .addComponent(botonIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dispositivosCB, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(614, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(no_promiscuo)
+                            .addComponent(jLabel2)
+                            .addComponent(promiscuo))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 338, Short.MAX_VALUE)
+                        .addComponent(contenedorOdometro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(198, 198, 198))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(botonIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(dispositivosCB, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(dispositivosCB, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
-                .addComponent(botonIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(promiscuo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(no_promiscuo)
-                .addContainerGap(164, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(contenedorOdometro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(65, 65, 65))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(dispositivosCB, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(35, 35, 35)
+                        .addComponent(botonIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(promiscuo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(no_promiscuo)))
+                .addContainerGap(150, Short.MAX_VALUE))
         );
 
         inicio.addTab("Inicio", jPanel2);
@@ -235,13 +270,9 @@ public class GUI extends javax.swing.JFrame {
         llenarDatosPaquete(tablaDatos);
         
     }//GEN-LAST:event_TablaSnifferMouseClicked
-
+//*
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+        
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -253,13 +284,12 @@ public class GUI extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
             new GUI().setVisible(true);
         });
 
     }
-
+//*/
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup ModoCapura;
     private javax.swing.JTable TablaSniffer;
@@ -267,6 +297,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton botonDeneter;
     private javax.swing.JButton botonIniciar;
     private javax.swing.JButton botonRegresar;
+    private javax.swing.JPanel contenedorOdometro;
     private javax.swing.JComboBox<String> dispositivosCB;
     private javax.swing.JTabbedPane inicio;
     private javax.swing.JLabel jLabel1;
