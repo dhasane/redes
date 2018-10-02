@@ -30,7 +30,6 @@ public class Red {
         sniffer.modificarInterfaceDeRed(d, modoDeCaptura);
         sniffer.setTabla(TablaSniffer);
         sniffer.startTask();
-        
     }
 
     public void conseguirDaticos(int fila, JTable tablaDatos) {
@@ -39,7 +38,6 @@ public class Red {
         PaqueteETHERNET ethernet = crearPaqueteEthernet(paquete);
 
         llenarTablaDeDatos(tablaDatos, ethernet);
-
     }
 
     public void llenarComboBoxDispositivos(JComboBox dispositivosCB) {

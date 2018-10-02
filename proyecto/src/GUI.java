@@ -39,7 +39,7 @@ public class GUI extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         botonIniciar = new javax.swing.JButton();
         dispositivosCB = new javax.swing.JComboBox<>();
-        jLabel1 = new javax.swing.JLabel();
+        lblSeleccionesDisp = new javax.swing.JLabel();
         promiscuo = new javax.swing.JRadioButton();
         jLabel2 = new javax.swing.JLabel();
         no_promiscuo = new javax.swing.JRadioButton();
@@ -64,7 +64,7 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Selecciones el dispositivo");
+        lblSeleccionesDisp.setText("Selecciones el dispositivo");
 
         ModoCapura.add(promiscuo);
         promiscuo.setText("Promiscuo");
@@ -102,7 +102,7 @@ public class GUI extends javax.swing.JFrame {
                         .addGap(198, 198, 198))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblSeleccionesDisp, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(botonIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(dispositivosCB, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(612, Short.MAX_VALUE))))
@@ -117,7 +117,7 @@ public class GUI extends javax.swing.JFrame {
                         .addGap(65, 65, 65))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addGap(22, 22, 22)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblSeleccionesDisp, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(dispositivosCB, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(35, 35, 35)
@@ -128,7 +128,7 @@ public class GUI extends javax.swing.JFrame {
                         .addComponent(promiscuo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(no_promiscuo)))
-                .addContainerGap(164, Short.MAX_VALUE))
+                .addContainerGap(150, Short.MAX_VALUE))
         );
 
         inicio.addTab("Inicio", jPanel2);
@@ -315,7 +315,6 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JPanel contenedorOdometro;
     private javax.swing.JComboBox<String> dispositivosCB;
     private javax.swing.JTabbedPane inicio;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -323,6 +322,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JLabel lblSeleccionesDisp;
     private javax.swing.JRadioButton no_promiscuo;
     private javax.swing.JRadioButton promiscuo;
     private Odometro.RotatePanel rp;

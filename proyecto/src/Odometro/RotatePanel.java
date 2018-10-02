@@ -7,6 +7,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class RotatePanel extends JPanel {
@@ -16,11 +17,28 @@ public class RotatePanel extends JPanel {
     String fondo = "fondoV3.png";
     String aguja = "agujav3.png";
     int max;
+    JLabel label;
+    JLabel txt;
+    
     public RotatePanel() {
-//        max = 180000;
+        label = new JLabel("prueba");
+        txt = new JLabel("actual / maximo");
+        
+        this.setPreferredSize(new Dimension(100, 100));
+        
+        int xl = (int)(this.getPreferredSize().width * 0.8);
+        int yl =(int) ( this.getPreferredSize().height * 1.5);
+        
+        label.setBounds(xl, yl, label.getPreferredSize().width*4, label.getPreferredSize().height);
+        label.setVisible(true);
+        
+        txt.setBounds(xl, yl-15, label.getPreferredSize().width*4, label.getPreferredSize().height);
+        txt.setVisible(true);
+        
+        this.add(txt);
+        this.add(label);
         max = 5000;
         this.angulo = 180;
-        this.setPreferredSize(new Dimension(100, 100));
     }
     
     
@@ -59,7 +77,7 @@ public class RotatePanel extends JPanel {
         if (this.angulo >= 360){
             this.angulo = 0;
         }
-        
+        label.setText(ang+"/"+max);
         System.out.println(ang +"/"+max);
         repaint();
     }
