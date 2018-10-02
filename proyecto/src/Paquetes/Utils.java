@@ -35,6 +35,8 @@ public final class Utils {
                 nombre = "IPv6";
                 break;
             default:
+                nombre = ""+ num;
+//                System.out.println("paquete raro :"+nombre);
                 nombre = "No reconocido";
                 break;
         }

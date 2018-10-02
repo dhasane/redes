@@ -37,10 +37,9 @@ public class RotatePanel extends JPanel {
         
         this.add(txt);
         this.add(label);
-        max = 0;
+        max = 1;
         this.angulo = 180;
     }
-    
     
     public void paintComponent(Graphics g) {
         AffineTransform at = AffineTransform.getTranslateInstance(0, 0);

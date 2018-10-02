@@ -97,7 +97,7 @@ public class Sniffer implements Runnable {
         return null;
     }
     
-     public void setDispositivos(NetworkInterface[] dispositivos) {
+    public void setDispositivos(NetworkInterface[] dispositivos) {
         this.dispositivos = dispositivos;
     }
 
@@ -163,8 +163,6 @@ public class Sniffer implements Runnable {
         }
 
     }
-
-   
 
     void modificarInterfaceDeRed(String d, boolean modoDeCaptura2) {
         this.setDispositivoRealNoFake(this.buscarDispositivo(d));
