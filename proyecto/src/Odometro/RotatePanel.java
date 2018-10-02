@@ -15,8 +15,10 @@ public class RotatePanel extends JPanel {
     
     String fondo = "fondoV3.png";
     String aguja = "agujav3.png";
-
+    int max;
     public RotatePanel() {
+//        max = 180000;
+        max = 5000;
         this.angulo = 180;
         this.setPreferredSize(new Dimension(100, 100));
     }
@@ -43,16 +45,22 @@ public class RotatePanel extends JPanel {
     public void rotar(int ang) {
         
         float val;
-        int max = 180000;
+//        int max = 180000;
         int angmax = 180;
+        if (ang > max)
+        {
+            max = ang;
+        }
         
-        val = 100*ang/max; // porcentaje
+        val = 100 * ang/max; // porcentaje
         val *= 1.8;
         this.angulo = 180 + (int)val;
         
         if (this.angulo >= 360){
             this.angulo = 0;
         }
+        
+        System.out.println(ang +"/"+max);
         repaint();
     }
 

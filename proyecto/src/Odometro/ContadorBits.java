@@ -89,7 +89,7 @@ public class ContadorBits implements Runnable //extends Thread
         if (act > anterior) // falta hacer un buen reconocimiento de segundo 
         {
             this.segundos++;
-            //System.out.println("total en "+pos+" : "+ bitsSeg[pos]+"     seg : "+segundos);
+//            System.out.println("total en "+pos+" : "+ bitsSeg[pos]+"     seg : "+segundos);
             int total = 0 ;
             for (int a = 0 ; a < cantHilos ; a ++)
             {
