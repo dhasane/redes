@@ -14,14 +14,14 @@ public class RotatePanel extends JPanel {
 
     long angulo;
     
-    String fondo = "fondoV3.png";
+    String fondo = "ff.png";
     String aguja = "agujav3.png";
     int max;
     JLabel label;
     JLabel txt;
     
     public RotatePanel() {
-        label = new JLabel("prueba");
+        label = new JLabel("0 / 0");
         txt = new JLabel("actual / maximo");
         
         this.setPreferredSize(new Dimension(100, 100));
@@ -78,7 +78,7 @@ public class RotatePanel extends JPanel {
             this.angulo = 0;
         }
         label.setText(ang+ " / "+max);
-        System.out.println(ang +" / "+max);
+//        System.out.println(ang +" / "+max);
         repaint();
     }
 
