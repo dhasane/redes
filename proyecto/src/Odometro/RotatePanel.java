@@ -14,7 +14,7 @@ public class RotatePanel extends JPanel {
 
     long angulo;
     
-    String fondo = "ff.png";
+    String fondo = "ff2.png";
     String aguja = "agujav3.png";
     int max;
     JLabel label;
