@@ -26,7 +26,7 @@ public class RotatePanel extends JPanel {
         
         this.setPreferredSize(new Dimension(100, 100));
         
-        int xl = (int)(this.getPreferredSize().width * 0.8);
+        int xl = (int)(this.getPreferredSize().width * 0.7);
         int yl =(int) ( this.getPreferredSize().height * 1.5);
         
         label.setBounds(xl, yl, label.getPreferredSize().width*4, label.getPreferredSize().height);
@@ -37,7 +37,7 @@ public class RotatePanel extends JPanel {
         
         this.add(txt);
         this.add(label);
-        max = 5000;
+        max = 0;
         this.angulo = 180;
     }
     
@@ -77,8 +77,8 @@ public class RotatePanel extends JPanel {
         if (this.angulo >= 360){
             this.angulo = 0;
         }
-        label.setText(ang+"/"+max);
-        System.out.println(ang +"/"+max);
+        label.setText(ang+ " / "+max);
+        System.out.println(ang +" / "+max);
         repaint();
     }
 
