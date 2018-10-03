@@ -10,6 +10,7 @@ import jpcap.PacketReceiver;
 import jpcap.packet.Packet;
 import jpcap.packet.IPPacket;
 import jpcap.packet.ICMPPacket;
+import jpcap.packet.IPv6Option;
 
 public class Receptor implements PacketReceiver {
 
@@ -72,8 +73,22 @@ public class Receptor implements PacketReceiver {
     }
 
     public void insertarEnTablaPrimeraSeccion(Packet packet) {
-
-        if (packet instanceof ICMPPacket || packet instanceof IPPacket) {
+        
+        boolean esipv4 = true;
+        
+        if(packet instanceof IPPacket )
+        {
+            if(((IPPacket) packet).version != 4)
+            {
+                esipv4 = false;
+            }
+        }
+        else
+        {
+            esipv4 = false;
+        }
+        
+        if (packet instanceof ICMPPacket || esipv4 ) {
 
             paquete = packet;
             DefaultTableModel model = (DefaultTableModel) tabla.getModel();
