@@ -338,7 +338,7 @@ public class GUI extends javax.swing.JFrame {
         TablaSniffer.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{},
                 new String[]{
-                    "Número", "Tiempo", "Fuente", "Destino", "Protocolo", "Tamaño", "Información"
+                    "Número", "Tiempo (ms)", "Fuente", "Destino", "Protocolo", "Tamaño", "Información"
                 }
         ));
         String dispositivoSeleccionado = dispositivosCB.getSelectedItem().toString();//PARA BUSCAR EL DISPOSITIVO SELECIONADO

@@ -14,14 +14,16 @@ public class RotatePanel extends JPanel {
 
     long angulo;
     
-    String fondo = "ff2.png";
+    String fondo = "ff3.png";
     String aguja = "agujav3.png";
     int max;
     JLabel label;
+    JLabel label2;
     JLabel txt;
     
     public RotatePanel() {
         label = new JLabel("0 / 0");
+        label2 = new JLabel("       0%");
         txt = new JLabel("actual / maximo");
         
         this.setPreferredSize(new Dimension(100, 100));
@@ -35,8 +37,12 @@ public class RotatePanel extends JPanel {
         txt.setBounds(xl, yl-15, label.getPreferredSize().width*4, label.getPreferredSize().height);
         txt.setVisible(true);
         
+        label2.setBounds(xl, yl+15, label.getPreferredSize().width*4, label.getPreferredSize().height);
+        label2.setVisible(true);
+        
         this.add(txt);
         this.add(label);
+        this.add(label2);
         max = 1;
         this.angulo = 180;
     }
@@ -77,6 +83,10 @@ public class RotatePanel extends JPanel {
             this.angulo = 0;
         }
         label.setText(ang+ " / "+max);
+        
+        float porcentaje =0;
+        porcentaje = ang*100/max;
+        label2.setText("       "+porcentaje+"%");
 //        System.out.println(ang +" / "+max);
         repaint();
     }

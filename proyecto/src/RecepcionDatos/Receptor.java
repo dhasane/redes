@@ -19,6 +19,7 @@ public class Receptor implements PacketReceiver {
     long tiempoAnterior;
     Packet paquete;
     PaqueteETHERNET paqueteEthernet;
+    
     //Utils utils;
 
     public Receptor() {
@@ -82,6 +83,7 @@ public class Receptor implements PacketReceiver {
             {
                 esipv4 = false;
             }
+          
         }
         else
         {
@@ -119,7 +121,9 @@ public class Receptor implements PacketReceiver {
             bb.put(paquete.header[16]);
             short tamanioDecimal = bb.getShort(0);
             row.add(tamanioDecimal);
-
+            if(packet instanceof ICMPPacket){
+                row.add("Protocolo ICMP");
+            }
             //------------------------------------------------------------------------------------------------------------- 
             model.addRow(row);
         }
