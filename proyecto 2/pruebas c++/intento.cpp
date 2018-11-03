@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 
 
    //strcat(filter_exp , "port 80");
-   //agregarPuertoAFiltro(filter_exp, 80);
+   agregarPuertoAFiltro(filter_exp, 58218);
    //agregarPuertoAFiltro(filter_exp, 23);
 
    bool promiscuo = false;
@@ -93,12 +93,6 @@ int main(int argc, char *argv[])
 
    pcap_loop(handle, -1, (pcap_handler)handler, buffer);
 
-   /*/
-   // Grab a packet 
-   packet = pcap_next(handle, &header);
-   // Print its length 
-   printf("Jacked a packet with length of [%d]\n", header.len);
-   // And close the session */
    pcap_close(handle);
    return (0);
 }
@@ -123,16 +117,16 @@ void handler(char *usr, const struct pcap_pkthdr *header, const u_char *pkt)
    tcpheader = (struct tcphdr *)(pkt + ethlen + iplen);
 
    //*
-   if (tcpheader->syn && tcpheader->ack)
+   //if (tcpheader->syn && tcpheader->ack)
    {
       source.s_addr = ipheader->saddr;
       dest.s_addr = ipheader->daddr;
 
       printf("From: %s \t%i\t", inet_ntoa(source), ntohs(tcpheader->source));
-      printf("To: %s \t%i\n", inet_ntoa(dest), ntohs(tcpheader->dest));
-      printf("\tLength: %i", ntohs(ipheader->tot_len));
-      printf("\n");
-      printf("Flags: ");
+      printf("To: %s \t%i  ", inet_ntoa(dest), ntohs(tcpheader->dest));
+      printf("\tLength: %i  ", ntohs(ipheader->tot_len));
+      //printf("\n");
+      printf("\tFlags: ");
       if (tcpheader->urg)
          printf("URG");
       if (tcpheader->ack)
