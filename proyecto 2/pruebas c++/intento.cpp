@@ -1,4 +1,4 @@
-#include <pcap.h>
+#include <pcap/pcap.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -6,7 +6,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
 
 #include <unistd.h>
 #include <arpa/inet.h>
@@ -22,38 +21,41 @@ void agregarPuertoAFiltro(char *filtro, int puerto);
 
 void handler(char *usr, const struct pcap_pkthdr *header, const u_char *pkt);
 
+void reEnviar(const u_char *pkt);
+
+pcap_t *handle;                // Session handle
 
 int main(int argc, char *argv[])
 {
-   pcap_t *handle;                // Session handle */
-   char *dev;                     // The device to sniff on */
-   char errbuf[PCAP_ERRBUF_SIZE]; // Error string */
-   struct bpf_program fp;         // The compiled filter */
+   
+   char *dev;                     // The device to sniff on
+   char errbuf[PCAP_ERRBUF_SIZE]; // Error string
+   struct bpf_program fp;         // The compiled filter
 
-   bpf_u_int32 mask;          // Our netmask */
-   bpf_u_int32 net;           // Our IP */
-   struct pcap_pkthdr header; // The header that pcap gives us */
-   const u_char *packet;      // The actual packet */
+   bpf_u_int32 mask;          // netmask
+   bpf_u_int32 net;           // IP
+   struct pcap_pkthdr header; // The header that pcap gives us
+   const u_char *packet;      // The actual packet
    u_char buffer[255];
    char filter_exp[] = ""; // filtro
 
    ethlen = sizeof(struct ether_header);
    iplen = sizeof(struct iphdr);
    tcplen = sizeof(struct tcphdr);
-   
-   
 
    std::cout << filter_exp << std::endl;
 
+   //strcat(filter_exp , "port 80 or port 23"); // estos dos sirven
+   //strcat(filter_exp , "port 80"); // estos dos sirven
+   //strcat(filter_exp , "portrange 1-1000");
 
-   //strcat(filter_exp , "port 80");
-   agregarPuertoAFiltro(filter_exp, 58218);
+   // esto aun no lo entiendo bien
+   //strcat(filter_exp , "icmp[icmptype] != icmp-echo and icmp[icmptype] != icmp-echoreply");
+
+   //agregarPuertoAFiltro(filter_exp, 58218);
    //agregarPuertoAFiltro(filter_exp, 23);
 
    bool promiscuo = false;
-
-
-
 
    /* Define the device */
    dev = pcap_lookupdev(errbuf);
@@ -85,6 +87,7 @@ int main(int argc, char *argv[])
       fprintf(stderr, "Couldn't parse filter %s: %s\n", filter_exp, pcap_geterr(handle));
       return (2);
    }
+
    if (pcap_setfilter(handle, &fp) == -1)
    {
       fprintf(stderr, "Couldn't install filter %s: %s\n", filter_exp, pcap_geterr(handle));
@@ -107,6 +110,7 @@ void agregarPuertoAFiltro(char *filtro, int puerto)
 
 void handler(char *usr, const struct pcap_pkthdr *header, const u_char *pkt)
 {
+
    struct ether_header *ethheader;
    struct iphdr *ipheader;
    struct tcphdr *tcpheader;
@@ -119,8 +123,24 @@ void handler(char *usr, const struct pcap_pkthdr *header, const u_char *pkt)
    //*
    //if (tcpheader->syn && tcpheader->ack)
    {
+      
       source.s_addr = ipheader->saddr;
       dest.s_addr = ipheader->daddr;
+
+
+      printf("From: %s \t", inet_ntoa(source));
+      printf("To: %s \t ", inet_ntoa(dest));
+
+
+      // esto cambia la ip :D----------------------------------
+
+      inet_pton(AF_INET, "10.154.23.23", &(ipheader->daddr));
+
+      // ------------------------------------------------------
+
+      source.s_addr = ipheader->saddr;
+      dest.s_addr = ipheader->daddr;
+
 
       printf("From: %s \t%i\t", inet_ntoa(source), ntohs(tcpheader->source));
       printf("To: %s \t%i  ", inet_ntoa(dest), ntohs(tcpheader->dest));
@@ -141,7 +161,18 @@ void handler(char *usr, const struct pcap_pkthdr *header, const u_char *pkt)
          printf("FIN ");
       printf("\n\n");
    }
+
+   //*
+   if (pcap_sendpacket(handle,pkt,sizeof(pkt)) == 0)
+   {
+      pcap_perror(handle, 0);
+      pcap_close(handle);
+      //exit(1);
+   }
    //*/
 
-   return;
+   // despues de recibir cada paquete, aqui seria reenviarlo a la direccion
+   // correcta, siempre y cuando encaje con las caracteristicas esperadas
+   // jej
+
 }
