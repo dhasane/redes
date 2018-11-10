@@ -2,7 +2,7 @@ CC = g++
 CFLAGS = -lpcap -I.
 CF= -I.
 
-ARC1 = intento
+ARC1 = firewall
 
 OBJ1 = $(ARC1).o 
 
