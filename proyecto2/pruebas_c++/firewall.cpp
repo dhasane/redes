@@ -1,4 +1,10 @@
-#include <pcap/pcap.h>
+
+
+#include <stdlib.h>
+#include <stdio.h>
+
+#include <pcap.h>
+
 #include <stdio.h>
 #include <string.h>
 
@@ -20,8 +26,6 @@ char ethlen, iplen, tcplen;
 void agregarPuertoAFiltro(char *filtro, int puerto);
 
 void handler(char *usr, const struct pcap_pkthdr *header, const u_char *pkt);
-
-void reEnviar(const u_char *pkt);
 
 pcap_t *handle;                // Session handle
 
