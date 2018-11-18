@@ -1,7 +1,14 @@
 package Firewall;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import static java.util.Collections.list;
+import java.util.List;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,6 +20,9 @@ import jpcap.packet.Packet;
 
 public class Conexion implements Runnable 
 {
+    String[] nombreTabla = new String[2];
+    String[][] direccionIP = new String [2][20];
+    Tabla[] tabla = new Tabla[2];
     // recepcion 
     //ReceptorPaquetes rb;
     boolean modoDeCaptura;
@@ -39,6 +49,8 @@ public class Conexion implements Runnable
         }
         */
     }
+    
+    
     
     public Conexion() {
         isRunning = true;
@@ -146,7 +158,7 @@ public class Conexion implements Runnable
             //sender = captor.getJpcapSenderInstance();
             sender=JpcapSender.openDevice(device2);
                     
-            
+            obtenerTablaDirecciones();
             agregarFiltro(captor);
             
             
@@ -184,12 +196,6 @@ public class Conexion implements Runnable
 
                     Packet pak = captor.getPacket();
                     
-                    
-                    
-                   
-                    
-                    
-                    
                     if(pak!=null)
                     {
                         System.out.println(pak);
@@ -198,10 +204,7 @@ public class Conexion implements Runnable
 
                         sender.sendPacket(pak);
                     }
-                    
-                    
-                    
-
+            
 
                 }
                 capturador.close();
@@ -216,10 +219,88 @@ public class Conexion implements Runnable
         }
     }
 
+    
+    private void obtenerTablaDirecciones(){
+        int contador=0, con=0, no=0;
+        String[] datosDireccion;
+        List<String> datosIP = new ArrayList<String>();
+        List<String> datosMAC = new ArrayList<String>();
+        try
+        {
+            // Se lanza el ejecutable.
+            Process p = Runtime.getRuntime().exec("cmd /C arp -a");
+            
+            // Se obtiene el stream de salida del programa
+            InputStream is = p.getInputStream();
+            
+            /* Se prepara un bufferedReader para poder leer la salida más comodamente. */
+            BufferedReader br = new BufferedReader (new InputStreamReader (is));
+            
+            // Se lee la primera linea
+            String aux = br.readLine();
+            
+            aux = br.readLine();
+           
+
+            while (aux!=null)
+            {
+                
+                if(aux.contains("Interfaz")){
+                    no = con;  
+                    nombreTabla[contador] = aux;
+                    aux = br.readLine();
+                    contador++;
+                    con=0;
+                }
+                if(aux.contains("Internet")){
+                    aux = br.readLine();   
+                }
+                else{
+                   direccionIP[contador-1][con] = aux;
+                   con++;
+                   
+                }
+                // y se lee la siguiente.
+                aux = br.readLine();
+            }
+        } 
+        catch (Exception e)
+        {
+            // Excepciones si hay algún problema al arrancar el ejecutable o al leer su salida.*/
+            e.printStackTrace();
+        } 
+        
+        
+     
+       
+        for(int i=0; i<nombreTabla.length; i++){
+            datosDireccion = nombreTabla[i].split(" ");
+            for(int j=0; j<direccionIP[i].length; j++){
+                if(direccionIP[i][j]!=null && j!=no-1){
+                    StringTokenizer tokens = new StringTokenizer(direccionIP[i][j]);
+                    datosIP.add(tokens.nextToken());
+                    datosMAC.add(tokens.nextToken());
+                } 
+            }
+            tabla[i] = new Tabla(datosDireccion[1], datosIP, datosMAC,datosIP.size());
+            datosIP = new ArrayList<String>();
+            datosMAC = new ArrayList<String>();
+        }
+        
+        System.out.println("---------------------------------------------");
+        for(int i=0; i<tabla.length; i++){
+            System.out.println("Interfaz "+tabla[i].direccion);
+            for(int j=0; j<tabla[i].tam; j++){
+                 System.out.println("ip MAC  "+tabla[i].direccionesIP.get(j)+ " |-| "+tabla[i].direccionesMAC.get(j));
+            }
+        }
+        System.out.println("---------------------------------------------");
+        
+    }
+    
     private Packet modificarPaquete(Packet pak) {
-        
          
-        
+      
          EthernetPacket ether=new EthernetPacket();
          ether.frametype=EthernetPacket.ETHERTYPE_IP;
          ether.src_mac=new byte[]{(byte)108,(byte)59,(byte)229,(byte)140,(byte)105,(byte)74};
