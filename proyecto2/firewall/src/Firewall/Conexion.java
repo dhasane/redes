@@ -1,12 +1,14 @@
 package Firewall;
 
 import java.io.IOException;
+import java.util.Scanner;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jpcap.JpcapCaptor;
 import jpcap.JpcapSender;
 import jpcap.NetworkInterface;
+import jpcap.packet.EthernetPacket;
 import jpcap.packet.Packet;
 
 public class Conexion implements Runnable 
@@ -28,13 +30,14 @@ public class Conexion implements Runnable
     private Semaphore sem;
     
     public void startTask() {
-        
-        // se llama a los hilos 
-        for(int a = 0 ; a < cantHilos ; a ++) 
-        {
-            hilo = new Thread(this);
+        hilo = new Thread(this);
             hilo.start();
+        // se llama a los hilos 
+        /*for(int a = 0 ; a < cantHilos ; a ++) 
+        {
+            
         }
+        */
     }
     
     public Conexion() {
@@ -125,16 +128,24 @@ public class Conexion implements Runnable
         } catch (InterruptedException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
         }
-        int pos = numHilos;
+        for(int i=0;i<dispositivos.length;i++){
+            System.out.println(dispositivos[i].description);
+        }
+        Scanner reader = new Scanner(System.in);  // Reading from System.in
+        System.out.println("Enter a number: ");
+        int n = reader.nextInt(); // Scans the next token of the input as an int.
+        
+        int pos = 1;
         numHilos++;
         sem.release();
         NetworkInterface device = dispositivos[pos];
-        
+        NetworkInterface device2 = dispositivos[0];
         
         try {
             captor = JpcapCaptor.openDevice(device,2000,false,5000);
-            sender = captor.getJpcapSenderInstance();
-            
+            //sender = captor.getJpcapSenderInstance();
+            sender=JpcapSender.openDevice(device2);
+                    
             
             agregarFiltro(captor);
             
@@ -173,6 +184,12 @@ public class Conexion implements Runnable
 
                     Packet pak = captor.getPacket();
                     
+                    
+                    
+                   
+                    
+                    
+                    
                     if(pak!=null)
                     {
                         System.out.println(pak);
@@ -182,11 +199,12 @@ public class Conexion implements Runnable
                         sender.sendPacket(pak);
                     }
                     
+                    
+                    
 
 
                 }
                 capturador.close();
-
             } 
             catch (IOException ex) 
             {
@@ -200,7 +218,13 @@ public class Conexion implements Runnable
 
     private Packet modificarPaquete(Packet pak) {
         
+         
         
+         EthernetPacket ether=new EthernetPacket();
+         ether.frametype=EthernetPacket.ETHERTYPE_IP;
+         ether.src_mac=new byte[]{(byte)108,(byte)59,(byte)229,(byte)140,(byte)105,(byte)74};
+         ether.dst_mac=new byte[]{(byte)112,(byte)28,(byte)231,(byte)235,(byte)32,(byte)79};
+         pak.datalink=ether;
         
         return pak;
     }
