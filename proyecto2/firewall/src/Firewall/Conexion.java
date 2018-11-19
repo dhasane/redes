@@ -30,6 +30,7 @@ public class Conexion implements Runnable
     //ReceptorPaquetes rb;
     boolean modoDeCaptura;
     NetworkInterface[] dispositivos;
+    byte[] mac;
     
     // para pausa 
     private volatile boolean paused;
@@ -108,6 +109,7 @@ public class Conexion implements Runnable
         numHilos++;
         sem.release();
         NetworkInterface device = dispositivos[pos];
+        mac=device.mac_address;
         
         try {
             captor = JpcapCaptor.openDevice(device,2000,false,5000);
@@ -154,9 +156,9 @@ public class Conexion implements Runnable
                     {
                         System.out.println(pak);
                     
-                        //pak = modificarPaquete(pak);
+                        pak = modificarPaquete(pak);
 
-                        sender.sendPacket(pak);
+                        //sender.sendPacket(pak);
                     }
                 }
                 capturador.close();
@@ -366,11 +368,20 @@ public class Conexion implements Runnable
          ip.dst_ip = ia;
          
          /*/
+        
+        
          
          EthernetPacket ether=new EthernetPacket();
          ether.frametype=EthernetPacket.ETHERTYPE_IP;
-         ether.src_mac=new byte[]{(byte)108,(byte)59,(byte)229,(byte)140,(byte)105,(byte)74};
-         ether.dst_mac=new byte[]{(byte)112,(byte)28,(byte)231,(byte)235,(byte)32,(byte)79};
+         ether.src_mac=mac;
+         byte[] auxMac=obtenerMacDestino(pak);
+         if(auxMac!=null){
+            ether.dst_mac=auxMac; 
+         }else{
+             //aun no se que hacer en este caso
+         }
+         
+         
          
          pak.datalink=ether;
          //*/
@@ -379,6 +390,59 @@ public class Conexion implements Runnable
 
     private void agregarFiltro(JpcapCaptor captor) throws IOException {
         //captor.setFilter("port 80", true);
+    }
+
+    private byte[] obtenerMacDestino(Packet pak) {
+        String macAux=null;
+        Boolean encontrado=false;
+        //byte[] ipOrg={pak.header[26], pak.header[27], pak.header[28], pak.header[29]};
+        String ipDes=String.valueOf(pak.header[30] & 0xff)+"."+String.valueOf(pak.header[31] & 0xff)+"." +String.valueOf( pak.header[32] & 0xff)+"."+ String.valueOf(pak.header[33] & 0xff);
+        System.out.println("PARA IP "+ipDes+" SE TIENE MAC ");
+        for (Tabla tabla1 : tabla) {
+            if (tabla1 != null) {
+                //System.out.println("Interfaz "+tabla[i].direccion);
+                for (int j = 0; j < tabla1.tam; j++) {
+                    if (tabla1.direccionesIP.get(j).equals(ipDes)) {
+                        macAux = tabla1.direccionesMAC.get(j);
+                        System.out.println(macAux);
+                        encontrado=true;
+                        break;
+                    }
+                    //System.out.println("ip MAC  "+tabla[i].direccionesIP.get(j)+ " |-| "+tabla[i].direccionesMAC.get(j));
+                }
+                if(encontrado){
+                    break;
+                }
+            }
+        }
+        //System.out.println("\n");
+        byte[] arreglo = {pak.header[0], pak.header[1], pak.header[2], pak.header[3], pak.header[4], pak.header[5]};
+        if(encontrado){
+            byte[] mac=stringMacToByteMac(macAux);
+            System.out.println("Byte mac "+Byte.toString(mac[0])+" "+Byte.toString(mac[1])+" "+Byte.toString(mac[2])+" "+Byte.toString(mac[3])+" "+Byte.toString(mac[4])+" "+Byte.toString(mac[5])+
+                    " Byte mac(packet) " +Byte.toString(arreglo[0])+" "+Byte.toString(arreglo[1])+" "+Byte.toString(arreglo[2])+" "+Byte.toString(arreglo[3])+" "+Byte.toString(arreglo[4])+" "+Byte.toString(arreglo[5]));
+        }
+        
+        
+        
+        
+        return null;
+    }
+    public byte[] stringMacToByteMac(String cadena) {
+
+        String[] parts = cadena.split("-");
+        
+        int[] temp = new int[parts.length];
+        for (int i = 0; i < parts.length; i++) {
+            temp[i] = Integer.parseInt(parts[i].trim(), 16);
+        }
+        byte[] valores={(byte)0,(byte)0,(byte)0,(byte)0,(byte)0,(byte)0};
+        //char[] caracteres = new char[parts.length];
+        for (int i = 0; i < parts.length; i++) {
+            valores[i] = (byte)temp[i];
+        }
+        
+        return valores;
     }
 
         
