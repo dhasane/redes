@@ -14,18 +14,13 @@ import java.util.logging.Logger;
 public class Conexion {
 
     public Conexion() {
-        run();
-    }
-
-    public void run() {
         
         String ubi;
-        // el de la universidad
-        //ubi = "C:/Users/redes/Desktop/redes-master/proyecto2/FireTomb/firewall/filtros.txt";
+        ubi = "filtros.txt"; // ubicacion archivo filtro
         
-        ubi = "filtros.txt"; // asi me esta funcionando 
+        String filtro = leerArchivo(ubi); //lectura de filtro lista negra
         
-        String filtro = leerArchivo(ubi); //filtro lista negra
+        System.out.println("filtro : "+filtro);
         
         WinDivert w =  new WinDivert(filtro, Enums.Layer.NETWORK_FORWARD, 0, Enums.Flag.DROP);
         
@@ -77,7 +72,6 @@ public class Conexion {
         } catch (IOException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("filtro : "+cadenaCompleta);
         
         return cadenaCompleta;
     }
