@@ -86,10 +86,12 @@ public class Conexion {
             String tmp = partes[a].toLowerCase().trim();
             
             String Puerto = "port";
-            Puerto = "tcp.DstPort ==";
+            Puerto = "tcp.SrcPort ==";
             
-            if (tmp.equals("ip")) {
+            if (tmp.equals("ipS")) {
                 partes[a] = "ip.SrcAddr ==";
+            }else if (tmp.equals("ipD")) {
+                partes[a] = "ip.DstAddr ==";
             } else if(tmp.equals("puerto")){
                 partes[a] = Puerto;
             }
