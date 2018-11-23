@@ -1,0 +1,9 @@
+
+ip 10.0.0.1
+and
+port 30
+or
+puerto 23
+and
+http
+
